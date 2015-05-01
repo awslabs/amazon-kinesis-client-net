@@ -150,6 +150,6 @@ all languages.
 [aws-sdk-dotnet]: http://aws.amazon.com/developers/getting-started/net/
 [aws-sdk-dotnet-credentials]: http://docs.aws.amazon.com/AWSSdkDocsNET/latest/DeveloperGuide/net-dg-config-creds.html#net-dg-config-creds-creds-file
 [aws-console]: http://aws.amazon.com/console/
-[sample-properties]: https://github.com/awslabs/amazon-kinesis-client-net/blob/master/SampleProducer/kcl.properties
+[sample-properties]: https://github.com/awslabs/amazon-kinesis-client-net/blob/master/SampleConsumer/kcl.properties
 [visual-studio]: http://www.visualstudio.com/
 [jvm]: http://java.com/en/download/
