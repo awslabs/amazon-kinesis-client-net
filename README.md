@@ -11,7 +11,7 @@ A record processor in C# typically looks something like the following:
 ```csharp
 using System;
 using System.Collections.Generic;
-using KCL.NET;
+using Amazon.Kinesis.ClientLibrary;
 
 namespace Sample
 {
@@ -64,10 +64,10 @@ In addition to source code for the Amazon KCL for .NET itself, this repository c
 
 The sample application consists of two projects:
 
-* **A data producer** (_SampleProducer\\AmazonKinesisSampleProducer.cs_)  
+* **A data producer** (_SampleProducer\\SampleProducer.cs_)  
 This program creates an Amazon Kinesis stream and continuously puts random records into it. There is commented-out code that deletes the created stream at the end; however, you should uncomment and use this code only if you do not intend to run SampleConsumer.
 
-* **A data processor** (_SampleConsumer\\AmazonKinesisSampleConsumer.cs_)  
+* **A data processor** (_SampleConsumer\\SampleConsumer.cs_)  
 A new instance of this program is invoked by the *MultiLangDaemon* for each shard in the stream. It consumes the data from the shard. If you no longer need to work with the stream after running SampleConsumer, remember to delete both the Amazon DynamoDB checkpoint table and the Kinesis stream in your AWS account.
 
 The following defaults are used in the sample application:

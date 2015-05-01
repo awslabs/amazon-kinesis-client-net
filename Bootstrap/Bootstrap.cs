@@ -20,7 +20,6 @@ using System.Diagnostics;
 using CommandLine;
 using CommandLine.Text;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.Win32;
 
 namespace Amazon.Kinesis.ClientLibrary.Bootstrap
