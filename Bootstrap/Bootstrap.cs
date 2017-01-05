@@ -146,17 +146,25 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
 
         private static readonly List<MavenPackage> MAVEN_PACKAGES = new List<MavenPackage>()
         {
-            new MavenPackage("com.amazonaws", "amazon-kinesis-client", "1.2.1"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-core", "2.1.1"),
-            new MavenPackage("org.apache.httpcomponents", "httpclient", "4.2"),
-            new MavenPackage("org.apache.httpcomponents", "httpcore", "4.2"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-annotations", "2.1.1"),
-            new MavenPackage("commons-codec", "commons-codec", "1.3"),
-            new MavenPackage("joda-time", "joda-time", "2.4"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk", "1.8.11"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk-core", "1.8.11"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-databind", "2.1.1"),
-            new MavenPackage("commons-logging", "commons-logging", "1.1.1"),
+            new MavenPackage("com.amazonaws", "amazon-kinesis-client", "1.7.2"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-dynamodb", "1.11.14"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-s3", "1.11.14"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-kms", "1.11.14"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-core", "1.11.14"),
+            new MavenPackage("org.apache.httpcomponents", "httpclient", "4.5.2"),
+            new MavenPackage("org.apache.httpcomponents", "httpcore", "4.4.4"),
+            new MavenPackage("commons-codec", "commons-codec", "1.9"),
+            new MavenPackage("com.fasterxml.jackson.core", "jackson-databind", "2.6.6"),
+            new MavenPackage("com.fasterxml.jackson.core", "jackson-annotations", "2.6.0"),
+            new MavenPackage("com.fasterxml.jackson.core", "jackson-core", "2.6.6"),
+            new MavenPackage("com.fasterxml.jackson.dataformat", "jackson-dataformat-cbor", "2.6.6"),
+            new MavenPackage("joda-time", "joda-time", "2.8.1"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-kinesis", "1.11.14"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-cloudwatch", "1.11.14"),
+            new MavenPackage("com.google.guava", "guava", "18.0"),
+            new MavenPackage("com.google.protobuf", "protobuf-java", "2.6.1"),
+            new MavenPackage("commons-lang", "commons-lang", "2.6"),
+            new MavenPackage("commons-logging", "commons-logging", "1.1.3")
         };
 
         /// <summary>
