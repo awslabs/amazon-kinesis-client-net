@@ -50,6 +50,12 @@ namespace Amazon.Kinesis.ClientLibrary
         /// </summary>
         /// <value>The partition key.</value>
         public abstract string PartitionKey { get; }
+
+        /// <summary>
+        /// The approximate time that the record was inserted into the stream
+        /// </summary>
+        /// <value>server-side timestamp</value>
+        public abstract double ApproximateArrivalTimestamp { get; }
     }
 
     /// <summary>
@@ -470,7 +476,12 @@ namespace Amazon.Kinesis.ClientLibrary
         [DataMember(Name = "partitionKey")]
         private string _partitionKey;
 
+        [DataMember(Name = "approximateArrivalTimestamp")]
+        private double _approximateArrivalTimestamp;
+
         public override string PartitionKey { get { return _partitionKey; } }
+
+        public override double ApproximateArrivalTimestamp => _approximateArrivalTimestamp;
 
         public override byte[] Data
         {
