@@ -17,8 +17,6 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading;
-using Amazon;
-using Amazon.Kinesis;
 using Amazon.Kinesis.Model;
 
 /// <summary>
@@ -69,7 +67,7 @@ namespace Amazon.Kinesis.ClientLibrary.SampleProducer
                 createStreamRequest.StreamName = myStreamName;
                 createStreamRequest.ShardCount = myStreamSize;
                 var createStreamReq = createStreamRequest;
-                kinesisClient.CreateStream(createStreamReq);
+                var CreateStreamResponse = kinesisClient.CreateStreamAsync(createStreamReq).Result;
                 Console.Error.WriteLine("Created Stream : " + myStreamName);
             }
             catch (ResourceInUseException)
@@ -89,10 +87,10 @@ namespace Amazon.Kinesis.ClientLibrary.SampleProducer
                 requestRecord.StreamName = myStreamName;
                 requestRecord.Data = new MemoryStream(Encoding.UTF8.GetBytes("testData-" + j));
                 requestRecord.PartitionKey = "partitionKey-" + j;
-                PutRecordResult putResult = kinesisClient.PutRecord(requestRecord);
+                var putResultResponse = kinesisClient.PutRecordAsync(requestRecord).Result;
                 Console.Error.WriteLine(
                     String.Format("Successfully putrecord {0}:\n\t partition key = {1,15}, shard ID = {2}",
-                        j, requestRecord.PartitionKey, putResult.ShardId));
+                        j, requestRecord.PartitionKey, putResultResponse.ShardId));
             }
 
             // Uncomment the following if you wish to delete the stream here.
@@ -125,7 +123,7 @@ namespace Amazon.Kinesis.ClientLibrary.SampleProducer
             {
                 DescribeStreamRequest describeStreamReq = new DescribeStreamRequest();
                 describeStreamReq.StreamName = myStreamName;
-                DescribeStreamResult describeResult = kinesisClient.DescribeStream(describeStreamReq);
+                var describeResult = kinesisClient.DescribeStreamAsync(describeStreamReq).Result;
                 string streamStatus = describeResult.StreamDescription.StreamStatus;
                 Console.Error.WriteLine("  - current state: " + streamStatus);
                 if (streamStatus == StreamStatus.ACTIVE)

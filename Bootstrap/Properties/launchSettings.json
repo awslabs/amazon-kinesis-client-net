@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Bootstrap": {
+      "commandName": "Project",
+      "commandLineArgs": "--properties kcl.properties --execute",
+      "workingDirectory": "..\\SampleConsumer"
+    }
+  }
+}

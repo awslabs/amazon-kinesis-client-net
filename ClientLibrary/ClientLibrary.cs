@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Amazon Software License (the "License").
@@ -642,7 +642,7 @@ namespace Amazon.Kinesis.ClientLibrary
             }
         }
 
-        private readonly StateMachine<State, Trigger> _stateMachine = new StateMachine<State, Trigger>(State.Start);
+        private readonly StateMachine<State, Trigger> _stateMachine = new StateMachine<State, Trigger>(State.Start, FiringMode.Immediate);
        
         private readonly IRecordProcessor _processor;
         private readonly IoHandler _iohandler;

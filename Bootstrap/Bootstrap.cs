@@ -18,9 +18,8 @@ using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using CommandLine;
-using CommandLine.Text;
 using System.Linq;
-using Microsoft.Win32;
+
 
 namespace Amazon.Kinesis.ClientLibrary.Bootstrap
 {
@@ -116,17 +115,6 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         [Option('e', "execute", HelpText = "Actually launch the KCL. If not specified, prints the command used to launch the KCL.")]
         public bool ShouldExecute { get; set; }
 
-        [HelpOption]
-        public string GetUsage()
-        {
-            var help = new HelpText
-            {
-                AdditionalNewLineAfterOption = true,
-                AddDashesToOption = true
-            };
-            help.AddOptions(this);
-            return help;
-        }
     }
 
     internal enum OperatingSystemCategory
@@ -218,41 +206,45 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                 proc.WaitForExit();
                 return java;
             }
-            catch
+            catch(Exception ex)
             {
             }
-
+            //TODO find away to read from registery on different OSs
             // Failing that, look in the registry.
-            foreach (var view in new [] { RegistryView.Registry64, RegistryView.Registry32 })
-            { 
-                var localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
-                var javaRootKey = localKey.OpenSubKey(@"SOFTWARE\JavaSoft\Java Runtime Environment");
-                foreach (var jreKeyName in javaRootKey.GetSubKeyNames())
-                {
-                    var jreKey = javaRootKey.OpenSubKey(jreKeyName);
-                    var javaHome = jreKey.GetValue("JavaHome") as string;
-                    var javaExe = Path.Combine(javaHome, "bin", "java.exe");
-                    if (File.Exists(javaExe))
-                    {
-                        return javaExe;
-                    }
-                }
-            }
+            //bool hasRegistry = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            //foreach (var view in new [] { RegistryView.Registry64, RegistryView.Registry32 })
+            //{ 
+            //    var localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+            //    var javaRootKey = localKey.OpenSubKey(@"SOFTWARE\JavaSoft\Java Runtime Environment");
+            //    foreach (var jreKeyName in javaRootKey.GetSubKeyNames())
+            //    {
+            //        var jreKey = javaRootKey.OpenSubKey(jreKeyName);
+            //        var javaHome = jreKey.GetValue("JavaHome") as string;
+            //        var javaExe = Path.Combine(javaHome, "bin", "java.exe");
+            //        if (File.Exists(javaExe))
+            //        {
+            //            return javaExe;
+            //        }
+            //    }
+            //}
                 
             return null;
         }
 
         public static void Main(string[] args)
         {
-            var options = new Options();
-            if (Parser.Default.ParseArguments(args, options))
-            {
+            var parserResult = Parser.Default.ParseArguments<Options>(args);
+
+            parserResult.WithParsed(options => {
+
                 string javaClassPath = FetchJars(options.JarFolder);
+
                 string java = FindJava(options.JavaLocation);
 
                 if (java == null)
                 {
                     Console.Error.WriteLine("java could not be found. You may need to install it, or manually specifiy the path to it.");
+
                     Environment.Exit(2);
                 }
 
@@ -289,7 +281,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     }
                     Console.WriteLine(c);
                 }
-            }
+            });
         }
     }
 }
