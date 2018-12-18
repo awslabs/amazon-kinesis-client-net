@@ -134,25 +134,25 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
 
         private static readonly List<MavenPackage> MAVEN_PACKAGES = new List<MavenPackage>()
         {
-            new MavenPackage("com.amazonaws", "amazon-kinesis-client", "1.9.0"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk-dynamodb", "1.11.273"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk-s3", "1.11.273"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk-kms", "1.11.273"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk-core", "1.11.273"),
-            new MavenPackage("org.apache.httpcomponents", "httpclient", "4.5.2"),
-            new MavenPackage("org.apache.httpcomponents", "httpcore", "4.4.4"),
-            new MavenPackage("commons-codec", "commons-codec", "1.9"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-databind", "2.6.6"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-annotations", "2.6.0"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-core", "2.6.6"),
-            new MavenPackage("com.fasterxml.jackson.dataformat", "jackson-dataformat-cbor", "2.6.6"),
-            new MavenPackage("joda-time", "joda-time", "2.8.1"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk-kinesis", "1.11.273"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk-cloudwatch", "1.11.273"),
-            new MavenPackage("com.google.guava", "guava", "18.0"),
-            new MavenPackage("com.google.protobuf", "protobuf-java", "2.6.1"),
-            new MavenPackage("commons-lang", "commons-lang", "2.6"),
-            new MavenPackage("commons-logging", "commons-logging", "1.1.3")
+            new MavenPackage("com.amazonaws", "amazon-kinesis-client", "1.9.3"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-dynamodb", "1.11.471"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-s3", "1.11.471"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-kms", "1.11.471"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-core", "1.11.471"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-kinesis", "1.11.471"),
+            new MavenPackage("com.amazonaws", "aws-java-sdk-cloudwatch", "1.11.471"),
+            new MavenPackage("org.apache.httpcomponents", "httpclient", "4.5.6"),
+            new MavenPackage("org.apache.httpcomponents", "httpcore", "4.4.10"),
+            new MavenPackage("commons-codec", "commons-codec", "1.11"),
+            new MavenPackage("com.fasterxml.jackson.core", "jackson-databind", "2.9.8"),
+            new MavenPackage("com.fasterxml.jackson.core", "jackson-annotations", "2.9.8"),
+            new MavenPackage("com.fasterxml.jackson.core", "jackson-core", "2.9.8"),
+            new MavenPackage("com.fasterxml.jackson.dataformat", "jackson-dataformat-cbor", "2.9.8"),
+            new MavenPackage("joda-time", "joda-time", "2.10.1"),
+            new MavenPackage("com.google.guava", "guava", "26.0-jre"),
+            new MavenPackage("com.google.protobuf", "protobuf-java", "3.6.1"),
+            new MavenPackage("org.apache.commons", "commons-lang3", "3.7"),
+            new MavenPackage("commons-logging", "commons-logging", "1.2")
         };
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             // Failing that, look in the registry.
             //bool hasRegistry = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             //foreach (var view in new [] { RegistryView.Registry64, RegistryView.Registry32 })
-            //{ 
+            //{
             //    var localKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
             //    var javaRootKey = localKey.OpenSubKey(@"SOFTWARE\JavaSoft\Java Runtime Environment");
             //    foreach (var jreKeyName in javaRootKey.GetSubKeyNames())
@@ -227,7 +227,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             //        }
             //    }
             //}
-                
+
             return null;
         }
 
