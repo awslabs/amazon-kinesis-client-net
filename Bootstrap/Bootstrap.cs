@@ -252,7 +252,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                 {
                     java,
                     "-cp",
-                    javaClassPath,
+                    string.Format("\"{0}\"", javaClassPath),
                     "com.amazonaws.services.kinesis.multilang.MultiLangDaemon",
                     options.PropertiesFile
                 };
