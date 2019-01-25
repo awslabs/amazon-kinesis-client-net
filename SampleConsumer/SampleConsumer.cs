@@ -1,17 +1,17 @@
-﻿/*
- * Copyright 2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Amazon Software License (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- *  http://aws.amazon.com/asl/
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- */
+﻿//
+// Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+//
+// Licensed under the Amazon Software License (the "License").
+// You may not use this file except in compliance with the License.
+// A copy of the License is located at
+//
+//  http://aws.amazon.com/asl/
+//
+// or in the "license" file accompanying this file. This file is distributed
+// on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+// express or implied. See the License for the specific language governing
+// permissions and limitations under the License.
+//
 
 using System;
 using System.Collections.Generic;
@@ -23,8 +23,8 @@ namespace Amazon.Kinesis.ClientLibrary.SampleConsumer
     /// <summary>
     /// A sample processor of Kinesis records.
     /// </summary>
-    class SampleRecordProcessor : IRecordProcessor {
-
+    class SampleRecordProcessor : IShardRecordProcessor
+    {
         /// <value>The time to wait before this record processor
         /// reattempts either a checkpoint, or the processing of a record.</value>
         private static readonly TimeSpan Backoff = TimeSpan.FromSeconds(3);
@@ -65,8 +65,6 @@ namespace Amazon.Kinesis.ClientLibrary.SampleConsumer
         /// </param>
         public void ProcessRecords(ProcessRecordsInput input)
         {
-            Console.Error.WriteLine("Processing " + input.Records.Count + " records from " + _kinesisShardId);
-
             // Process records and perform all exception handling.
             ProcessRecordsWithRetries(input.Records);
 
@@ -75,23 +73,6 @@ namespace Amazon.Kinesis.ClientLibrary.SampleConsumer
             {
                 Checkpoint(input.Checkpointer);
                 _nextCheckpointTime = DateTime.UtcNow + CheckpointInterval;
-            }
-        }
-
-        /// <summary>
-        /// This shuts down the record processor and checkpoints the specified checkpointer.
-        /// </summary>
-        /// <param name="input">
-        /// ShutdownContext containing information such as the reason for shutting down the record processor,
-        /// as well as a Checkpointer.
-        /// </param>
-        public void Shutdown(ShutdownInput input)
-        {
-            Console.Error.WriteLine("Shutting down record processor for shard: " + _kinesisShardId);
-            // Checkpoint after reaching end of shard, so we can start processing data from child shards.
-            if (input.Reason == ShutdownReason.TERMINATE)
-            {
-                Checkpoint(input.Checkpointer);
             }
         }
 
@@ -105,8 +86,10 @@ namespace Amazon.Kinesis.ClientLibrary.SampleConsumer
             {
                 bool processedSuccessfully = false;
                 string data = null;
-                for (int i = 0; i < NumRetries; ++i) {
-                    try {
+                for (int i = 0; i < NumRetries; ++i)
+                {
+                    try
+                    {
                         // As per the accompanying AmazonKinesisSampleProducer.cs, the payload
                         // is interpreted as UTF-8 characters.
                         data = System.Text.Encoding.UTF8.GetString(rec.Data);
@@ -120,12 +103,13 @@ namespace Amazon.Kinesis.ClientLibrary.SampleConsumer
 
                         processedSuccessfully = true;
                         break;
-                    } catch (Exception e) {
-                        Console.Error.WriteLine("Exception processing record data: " + data, e);
                     }
-
-                    //Back off before retrying upon an exception.
-                    Thread.Sleep(Backoff);
+                    catch (Exception e)
+                    {
+                        Console.Error.WriteLine("Exception processing record data: " + data, e);
+                        //Back off before retrying upon an exception.
+                        Thread.Sleep(Backoff);
+                    }
                 }
 
                 if (!processedSuccessfully)
@@ -149,6 +133,31 @@ namespace Amazon.Kinesis.ClientLibrary.SampleConsumer
             // will not be retried, but processing will continue.
             checkpointer.Checkpoint(RetryingCheckpointErrorHandler.Create(NumRetries, Backoff));
         }
+
+        public void LeaseLost(LeaseLossInput leaseLossInput)
+        {
+            //
+            // Perform any necessary cleanup after losing your lease.  Checkpointing is not possible at this point.
+            //
+            Console.Error.WriteLine($"Lost lease on {_kinesisShardId}");
+        }
+
+        public void ShardEnded(ShardEndedInput shardEndedInput)
+        {
+            //
+            // Once the shard has ended it means you have processed all records on the shard. To confirm completion the
+            // KCL requires that you checkpoint one final time using the default checkpoint value.
+            //
+            Console.Error.WriteLine(
+                $"All records for {_kinesisShardId} have been processed, starting final checkpoint");
+            shardEndedInput.Checkpointer.Checkpoint();
+        }
+
+        public void ShutdownRequested(ShutdownRequestedInput shutdownRequestedInput)
+        {
+            Console.Error.WriteLine($"Shutdown has been requested for {_kinesisShardId}. Checkpointing");
+            shutdownRequestedInput.Checkpointer.Checkpoint();
+        }
     }
 
     class MainClass
@@ -162,7 +171,8 @@ namespace Amazon.Kinesis.ClientLibrary.SampleConsumer
             {
                 KclProcess.Create(new SampleRecordProcessor()).Run();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.Error.WriteLine("ERROR: " + e);
             }
         }
