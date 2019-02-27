@@ -75,7 +75,7 @@ namespace Amazon.Kinesis.ClientLibrary
             WriteActions(
                 new InitializeAction("shardId-0"),
                 new ProcessRecordsAction(new DefaultRecord("1", "a", "hello")),
-                new ShutdownAction(ShutdownReason.ZOMBIE.ToString())
+                new LeaseLostAction()
             );
 
             var recordProcessor = Substitute.For<IRecordProcessor>();
@@ -100,30 +100,6 @@ namespace Amazon.Kinesis.ClientLibrary
                         throw new ClientException();
                     }));
             runTest.Invoke(recordProcessor);
-        }
-
-        /// <summary>
-        /// If the multilang daemon issues a command that causes us to go into an
-        /// invalid state, it should be fatal. At that point it's not clear whether
-        /// the daemon itself is in a valid state, and blindly following the
-        /// commands could lead to undefined behavior.
-        /// </summary>
-        [Test]
-        public void CrashOnInvalidActionException()
-        {
-            WriteActions(new CheckpointAction("456") { Error = "badstuff" });
-
-            var kclProcess = KclProcess.Create(Substitute.For<IRecordProcessor>(), _ioHandler);
-
-            try
-            {
-                kclProcess.Run();
-                Assert.Fail("Should have thrown a MalformedActionException");
-            }
-            catch (MalformedActionException)
-            {
-                // all good
-            }
         }
 
         /// <summary>
@@ -175,7 +151,7 @@ namespace Amazon.Kinesis.ClientLibrary
         [Test]
         public void NonFatalCheckpointError()
         {
-            var recordProcessor = Substitute.For<IRecordProcessor>();
+            var recordProcessor = Substitute.For<IShardRecordProcessor>();
             bool madeItPastCheckpoint = false;
             recordProcessor.ProcessRecords(Arg.Do<ProcessRecordsInput>(x => {
                 x.Checkpointer.Checkpoint();
@@ -204,14 +180,14 @@ namespace Amazon.Kinesis.ClientLibrary
                 new InitializeAction("0"),
                 new ProcessRecordsAction(new DefaultRecord("456", "cat", "bWVvdw==")),
                 new CheckpointAction("456"),
-                new ShutdownAction("TERMINATE"),
+                new ShardEndedAction(),
                 new CheckpointAction("456")
             );
 
             TestRecordProcessor recordProcessor = new TestRecordProcessor
             {
                 ProcessFunc = (input) => input.Checkpointer.Checkpoint(input.Records.Last()),
-                ShutdownFunc = (input) => input.Checkpointer.Checkpoint()
+                ShardEndedFunc = (input) => input.Checkpointer.Checkpoint()
             };
 
             KclProcess.Create(recordProcessor, _ioHandler).Run();
@@ -219,7 +195,7 @@ namespace Amazon.Kinesis.ClientLibrary
 
             dynamic a = outputActions[0];
             Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == "initialize");
+            Assert.IsTrue(a.ResponseFor == InitializeAction.ACTION);
 
 
             a = outputActions[1];
@@ -229,7 +205,7 @@ namespace Amazon.Kinesis.ClientLibrary
 
             a = outputActions[2];
             Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == "processRecords");
+            Assert.IsTrue(a.ResponseFor == ProcessRecordsAction.ACTION);
 
 
             a = outputActions[3];
@@ -239,7 +215,48 @@ namespace Amazon.Kinesis.ClientLibrary
 
             a = outputActions[4];
             Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == "shutdown");
+            Assert.IsTrue(a.ResponseFor == ShardEndedAction.ACTION);
+        }
+        
+        /// <summary>
+        /// Normal, error-free operation.
+        /// </summary>
+        [Test]
+        public void ShutdownRequestedCausesCheckpoint()
+        {
+            WriteActions(
+                new InitializeAction("0"),
+                new ProcessRecordsAction(new DefaultRecord("456", "cat", "bWVvdw==")),                
+                new ShutdownRequestedAction(),
+                new CheckpointAction("456")
+            );
+
+            TestRecordProcessor recordProcessor = new TestRecordProcessor
+            {
+                ShutdownRequestedFunc = (input) => input.Checkpointer.Checkpoint()                
+            };
+
+            KclProcess.Create(recordProcessor, _ioHandler).Run();
+            List<Action> outputActions = ParseActionsFromOutput();
+
+            dynamic a = outputActions[0];
+            Assert.IsTrue(a is StatusAction);
+            Assert.IsTrue(a.ResponseFor == InitializeAction.ACTION);            
+
+
+            a = outputActions[1];
+            Assert.IsTrue(a is StatusAction);
+            Assert.IsTrue(a.ResponseFor == ProcessRecordsAction.ACTION);
+
+
+            a = outputActions[2];
+            Assert.IsTrue(a is CheckpointAction);
+            Assert.IsTrue(a.SequenceNumber == null && a.Error == null);
+           
+
+            a = outputActions[3];
+            Assert.IsTrue(a is StatusAction);
+            Assert.IsTrue(a.ResponseFor == ShutdownRequestedAction.ACTION);
         }
 
         /// <summary>
@@ -253,7 +270,7 @@ namespace Amazon.Kinesis.ClientLibrary
                 new InitializeAction("0"),
                 new ProcessRecordsAction(new DefaultRecord("456", "cat", "bWVvdw==")),
                 new CheckpointAction(null) { Error = "oh noes" },
-                new ShutdownAction("TERMINATE")
+                new ShardEndedAction()
             );
 
             bool handlerCodeCalled = false;
@@ -285,7 +302,7 @@ namespace Amazon.Kinesis.ClientLibrary
                 new CheckpointAction(null) { Error = "oh noes" },
                 new CheckpointAction(null) { Error = "oh noes" },
                 new CheckpointAction(null) { Error = "oh noes" },
-                new ShutdownAction(ShutdownReason.TERMINATE.ToString()),
+                new ShardEndedAction(),
                 new CheckpointAction(null) { Error = "oh noes" },
                 new CheckpointAction(null) { Error = "oh noes" },
                 new CheckpointAction(null) { Error = "oh noes" },
@@ -297,19 +314,19 @@ namespace Amazon.Kinesis.ClientLibrary
             {
                 ProcessFunc = (input) => input.Checkpointer.Checkpoint(input.Records.Last(),
                         RetryingCheckpointErrorHandler.Create(numRetries, TimeSpan.Zero)),
-                ShutdownFunc = (input) => input.Checkpointer.Checkpoint(
+                ShardEndedFunc = (input) => input.Checkpointer.Checkpoint(
                         RetryingCheckpointErrorHandler.Create(numRetries, TimeSpan.Zero))
             };
 
             KclProcess.Create(recordProcessor, _ioHandler).Run();
             List<Action> outputActions = ParseActionsFromOutput();
 
-            Console.Error.WriteLine(String.Join("\n", outputActions.Select(x => x.ToString()).ToList()));
+            Console.Error.WriteLine(String.Join("\n", outputActions.Select(x => x.ToJson()).ToList()));
 
             int i = 0;
             dynamic a = outputActions[i++];
             Assert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
-            Assert.AreEqual("initialize", a.ResponseFor);
+            Assert.AreEqual(InitializeAction.ACTION, a.ResponseFor);
 
             for (int j = 0; j <= numRetries; j++)
             {
@@ -321,7 +338,7 @@ namespace Amazon.Kinesis.ClientLibrary
 
             a = outputActions[i++];
             Assert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
-            Assert.AreEqual("processRecords", a.ResponseFor);
+            Assert.AreEqual(ProcessRecordsAction.ACTION, a.ResponseFor);
 
             for (int j = 0; j <= numRetries; j++)
             {
@@ -333,15 +350,17 @@ namespace Amazon.Kinesis.ClientLibrary
 
             a = outputActions[i++];
             Assert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
-            Assert.AreEqual("shutdown", a.ResponseFor);
+            Assert.AreEqual(ShardEndedAction.ACTION, a.ResponseFor);
 
         }
 
-        private class TestRecordProcessor : IRecordProcessor
+        private class TestRecordProcessor : IShardRecordProcessor
         {
             private Action<InitializationInput> InitFunc { get; set; }
-            internal Action<ProcessRecordsInput> ProcessFunc { private get; set; }
-            internal Action<ShutdownInput> ShutdownFunc { private get; set; }
+            internal Action<ProcessRecordsInput> ProcessFunc { private get; set; }            
+            internal Action<LeaseLossInput> LeaseLostFunc { get; set; }
+            internal Action<ShardEndedInput> ShardEndedFunc { get; set; }
+            internal Action<ShutdownRequestedInput> ShutdownRequestedFunc { get; set; }
 
             public void Initialize(InitializationInput input)
             {
@@ -360,13 +379,22 @@ namespace Amazon.Kinesis.ClientLibrary
                 }
             }
 
-            public void Shutdown(ShutdownInput input)
+            public void LeaseLost(LeaseLossInput leaseLossInput)
             {
-                if (ShutdownFunc != null)
-                {
-                    ShutdownFunc.Invoke(input);
-                }
+                LeaseLostFunc?.Invoke(leaseLossInput);
             }
+
+            public void ShardEnded(ShardEndedInput shardEndedInput)
+            {
+                ShardEndedFunc?.Invoke(shardEndedInput);
+            }
+
+            public void ShutdownRequested(ShutdownRequestedInput shutdownRequestedInput)
+            {
+                ShutdownRequestedFunc?.Invoke(shutdownRequestedInput);
+            }
+
+            
         }
 
         private static void WriteLines(Stream stream, params string[] content)
@@ -383,7 +411,7 @@ namespace Amazon.Kinesis.ClientLibrary
 
         private void WriteActions(params Action[] actions)
         {
-            WriteLines(_input, actions.ToArray().Select(x => x.ToString()).ToArray());
+            WriteLines(_input, actions.ToArray().Select(x => x.ToJson()).ToArray());
         }
 
         private List<Action> ParseActionsFromOutput()
