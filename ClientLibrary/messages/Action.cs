@@ -25,6 +25,8 @@ namespace Amazon.Kinesis.ClientLibrary
     [DataContract]
     internal class Action
     {
+        public static readonly string SHUTDOWN_ACTION = "shutdown";
+
         protected static readonly Dictionary<string, Type> Types = new Dictionary<string, Type>()
         {
             { InitializeAction.ACTION, typeof(InitializeAction) },
@@ -33,7 +35,8 @@ namespace Amazon.Kinesis.ClientLibrary
             { ShardEndedAction.ACTION, typeof(ShardEndedAction) },
             { ShutdownRequestedAction.ACTION, typeof(ShutdownRequestedAction) },
             { CheckpointAction.ACTION, typeof(CheckpointAction) },
-            { StatusAction.ACTION, typeof(StatusAction) }
+            { StatusAction.ACTION, typeof(StatusAction) },
+            { SHUTDOWN_ACTION, typeof(ShutdownRequestedAction) },
         };
 
         public static Action Parse(string json)
