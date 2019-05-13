@@ -283,6 +283,7 @@ namespace Amazon.Kinesis.ClientLibrary
 
         public void WriteAction(Action a)
         {
+            _outWriter.WriteLine("\n");
             _outWriter.WriteLine(a.ToJson());
             _outWriter.Flush();
         }
