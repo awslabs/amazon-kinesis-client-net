@@ -203,3 +203,7 @@ all languages.
 [sample-properties]: https://github.com/awslabs/amazon-kinesis-client-net/blob/master/SampleConsumer/kcl.properties
 [visual-studio]: http://www.visualstudio.com/
 [jvm]: http://java.com/en/download/
+
+## License
+
+This library is licensed under the Apache 2.0 License. 
