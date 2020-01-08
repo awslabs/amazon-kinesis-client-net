@@ -1,0 +1,30 @@
+jobs:
+  - job: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    variables:
+          buildConfiguration: Release
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'restore'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+    - task: DotNetCoreCLI@2
+      displayName: "Pack"
+      inputs:
+        command: pack
+        configuration: $(buildConfiguration)
+        condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+        packagesToPack: "Bootstrap/Bootstrap.csproj;ClientLibrary/ClientLibrary.csproj;"
+        nobuild: true
+        arguments: "-o $(Build.ArtifactStagingDirectory)"
+
+    - task: PublishBuildArtifacts@1
+      displayName: "Publish build artifact"
+      inputs:
+        artifactName: "packages"

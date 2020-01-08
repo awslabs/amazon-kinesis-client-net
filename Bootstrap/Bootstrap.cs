@@ -202,8 +202,8 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                 jarFolder = "jars";
             }
 
-            if (!Path.IsPathRooted(jarFolder))
             {
+            if (!Path.IsPathRooted(jarFolder))
                 jarFolder = Path.Combine(Directory.GetCurrentDirectory(), jarFolder);
             }
 
@@ -244,7 +244,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                 proc.WaitForExit();
                 return java;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             //TODO find away to read from registery on different OSs
