@@ -8,7 +8,7 @@
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Amazon.com, Inc")]
 [assembly: AssemblyProduct("Bootstrap for Amazon Kinesis Client Library .NET")]
-[assembly: AssemblyCopyright("Copyright 2015 Amazon.com, Inc. or its affiliates. All Rights Reserved.")]
+[assembly: AssemblyCopyright("Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
