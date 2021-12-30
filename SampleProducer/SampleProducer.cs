@@ -48,7 +48,7 @@ namespace Amazon.Kinesis.ClientLibrary.SampleProducer
         /// </summary>
         public static void Main(string[] args)
         {
-            const string myStreamName = "myTestStream";
+            const string myStreamName = "kclnetsample";
             const int myStreamSize = 1;
 
             try
@@ -60,11 +60,17 @@ namespace Amazon.Kinesis.ClientLibrary.SampleProducer
                 var CreateStreamResponse = kinesisClient.CreateStreamAsync(createStreamReq).Result;
                 Console.Error.WriteLine("Created Stream : " + myStreamName);
             }
-            catch (ResourceInUseException)
+            catch (Exception ex)
             {
-                Console.Error.WriteLine("Producer is quitting without creating stream " + myStreamName +
-                    " to put records into as a stream of the same name already exists.");
-                Environment.Exit(1);
+                if (ex is AggregateException || ex is ResourceInUseException)
+                {
+                    Console.Error.WriteLine("Producer is not creating stream " + myStreamName +
+                        " to put records into as a stream of the same name already exists.");
+                }
+                else
+                {
+                    Environment.Exit(1);
+                }
             }
 
             WaitForStreamToBecomeAvailable(myStreamName);

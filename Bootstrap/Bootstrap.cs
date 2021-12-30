@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -62,7 +63,8 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             String destination = Path.Combine(folder, FileName);
             if (!File.Exists(destination))
             {
-                var client = new System.Net.WebClient();
+                var client = new WebClient();
+                client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                 Console.Error.WriteLine(Url + " --> " + destination);
                 client.DownloadFile(new Uri(Url), destination);
             }
@@ -105,7 +107,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         [Option('e', "execute", HelpText =
             "Actually launch the KCL. If not specified, prints the command used to launch the KCL.")]
         public bool ShouldExecute { get; set; }
-        
+
         [Option('l', "log-configuration", Required = false, HelpText = "A Logback XML configuration file")]
         public string LogbackConfiguration { get; set; }
     }
@@ -125,14 +127,42 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             ? OperatingSystemCategory.UNIX
             : OperatingSystemCategory.WINDOWS;
 
-        private static readonly List<MavenPackage> MAVEN_PACKAGES = XElement.Load("../pom.xml")
-            .Descendants("dependencies")
-            .Select(x => new MavenPackage(
-                (string) x.Element("groupId"), 
-                (string) x.Element("artifactId"), 
-                (string) x.Element("version"))
-            ).ToList();
-            
+        private static readonly List<MavenPackage> MAVEN_PACKAGES = ParseMavenPackages();
+
+        private static List<MavenPackage> ParseMavenPackages()
+        {
+            string xmlns = "{http://maven.apache.org/POM/4.0.0}";
+            XElement mavenRoot = XElement.Load("../pom.xml");
+
+            Dictionary<string, string> commonVersions = new Dictionary<string, string>();
+            foreach (XElement el in mavenRoot.Descendants(xmlns + "properties").Elements())
+            {
+                commonVersions.Add("${" + el.Name.ToString().Replace(xmlns, "") + "}", (string)el);
+            }
+
+            List<MavenPackage> packages = new List<MavenPackage>();
+            foreach (XElement el in mavenRoot.Descendants(xmlns + "dependency"))
+            {
+                string version = (string)el.Element(xmlns + "version");
+                if (commonVersions.ContainsKey(version))
+                {
+                    packages.Add(new MavenPackage(
+                        (string)el.Element(xmlns + "groupId"),
+                        (string)el.Element(xmlns + "artifactId"),
+                        commonVersions[version]));
+                }
+                else
+                {
+                    packages.Add(new MavenPackage(
+                        (string)el.Element(xmlns + "groupId"),
+                        (string)el.Element(xmlns + "artifactId"),
+                        version));
+                }
+            }
+
+            return packages;
+        }
+
         /// <summary>
         /// Downloads all the required jars from Maven and returns a classpath string that includes all those jars.
         /// </summary>
@@ -235,9 +265,9 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     java,
                     "-cp",
                     javaClassPath,
-                    "software.amazon.kinesis.multilang.MultiLangDaemon",                    
-                    "-p", 
-                    options.PropertiesFile                    
+                    "software.amazon.kinesis.multilang.MultiLangDaemon",
+                    "-p",
+                    options.PropertiesFile
                 };
                 if (!string.IsNullOrEmpty(options.LogbackConfiguration))
                 {
@@ -245,7 +275,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     cmd.Add(options.LogbackConfiguration);
                 }
                 if (options.ShouldExecute)
-                {                    
+                {
                     // Start the KCL.
                     Process proc = new Process
                     {
