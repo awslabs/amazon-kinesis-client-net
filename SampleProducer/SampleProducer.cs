@@ -60,17 +60,18 @@ namespace Amazon.Kinesis.ClientLibrary.SampleProducer
                 var CreateStreamResponse = kinesisClient.CreateStreamAsync(createStreamReq).Result;
                 Console.Error.WriteLine("Created Stream : " + myStreamName);
             }
-            catch (Exception ex)
+            catch (AggregateException ae)
             {
-                if (ex is AggregateException || ex is ResourceInUseException)
+                ae.Handle((x) =>
                 {
-                    Console.Error.WriteLine("Producer is not creating stream " + myStreamName +
+                    if (x is ResourceInUseException)
+                    {
+                        Console.Error.WriteLine("Producer is not creating stream " + myStreamName +
                         " to put records into as a stream of the same name already exists.");
-                }
-                else
-                {
-                    Environment.Exit(1);
-                }
+                        return true;
+                    }
+                    return false; // Let anything else stop the application.
+                });
             }
 
             WaitForStreamToBecomeAvailable(myStreamName);
