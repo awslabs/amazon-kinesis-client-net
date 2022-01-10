@@ -84,6 +84,8 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             try
             {
                 var client = new System.Net.WebClient();
+                // setting user-agent (curl) to avoid 403 errors from maven
+                client.Headers.Add("user-agent", "curl/7.64.1");
                 client.DownloadFile(new Uri(Url), destination);
                 break;
             }
