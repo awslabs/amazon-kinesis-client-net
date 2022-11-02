@@ -1,24 +1,16 @@
 ﻿//
 // Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-//
-// Licensed under the Amazon Software License (the "License").
-// You may not use this file except in compliance with the License.
-// A copy of the License is located at
-//
-//  http://aws.amazon.com/asl/
-//
-// or in the "license" file accompanying this file. This file is distributed
-// on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
-// express or implied. See the License for the specific language governing
-// permissions and limitations under the License.
+// SPDX-License-Identifier: Apache-2.0
 //
 
 using System;
 using System.IO;
+using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
-using CommandLine;
 using System.Linq;
+using System.Xml.Linq;
+using CommandLine;
 
 namespace Amazon.Kinesis.ClientLibrary.Bootstrap
 {
@@ -71,7 +63,8 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             String destination = Path.Combine(folder, FileName);
             if (!File.Exists(destination))
             {
-                var client = new System.Net.WebClient();
+                var client = new WebClient();
+                client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                 Console.Error.WriteLine(Url + " --> " + destination);
                 client.DownloadFile(new Uri(Url), destination);
             }
@@ -114,7 +107,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         [Option('e', "execute", HelpText =
             "Actually launch the KCL. If not specified, prints the command used to launch the KCL.")]
         public bool ShouldExecute { get; set; }
-        
+
         [Option('l', "log-configuration", Required = false, HelpText = "A Logback XML configuration file")]
         public string LogbackConfiguration { get; set; }
     }
@@ -134,71 +127,41 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             ? OperatingSystemCategory.UNIX
             : OperatingSystemCategory.WINDOWS;
 
-        private static readonly List<MavenPackage> MAVEN_PACKAGES = new List<MavenPackage>()
+        private static readonly List<MavenPackage> MAVEN_PACKAGES = ParseMavenPackages();
+
+        private static List<MavenPackage> ParseMavenPackages()
         {
-            new MavenPackage("software.amazon.kinesis", "amazon-kinesis-client-multilang", "2.1.2"),
-            new MavenPackage("software.amazon.kinesis", "amazon-kinesis-client", "2.1.2"),
-            new MavenPackage("software.amazon.awssdk", "kinesis", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "aws-cbor-protocol", "2.4.0"),
-            new MavenPackage("com.fasterxml.jackson.dataformat", "jackson-dataformat-cbor", "2.9.8"),
-            new MavenPackage("software.amazon.awssdk", "aws-json-protocol", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "dynamodb", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "cloudwatch", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "netty-nio-client", "2.4.0"),
-            new MavenPackage("io.netty", "netty-codec-http", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-codec-http2", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-codec", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-transport", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-resolver", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-common", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-buffer", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-handler", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-transport-native-epoll", "4.1.32.Final"),
-            new MavenPackage("io.netty", "netty-transport-native-unix-common", "4.1.32.Final"),
-            new MavenPackage("com.typesafe.netty", "netty-reactive-streams-http", "2.0.0"),
-            new MavenPackage("com.typesafe.netty", "netty-reactive-streams", "2.0.0"),
-            new MavenPackage("org.reactivestreams", "reactive-streams", "1.0.2"),
-            new MavenPackage("com.google.guava", "guava", "26.0-jre"),
-            new MavenPackage("com.google.code.findbugs", "jsr305", "3.0.2"),
-            new MavenPackage("org.checkerframework", "checker-qual", "2.5.2"),
-            new MavenPackage("com.google.errorprone", "error_prone_annotations", "2.1.3"),
-            new MavenPackage("com.google.j2objc", "j2objc-annotations", "1.1"),
-            new MavenPackage("org.codehaus.mojo", "animal-sniffer-annotations", "1.14"),
-            new MavenPackage("com.google.protobuf", "protobuf-java", "2.6.1"),
-            new MavenPackage("org.apache.commons", "commons-lang3", "3.8.1"),
-            new MavenPackage("org.slf4j", "slf4j-api", "1.7.25"),
-            new MavenPackage("io.reactivex.rxjava2", "rxjava", "2.1.14"),
-            new MavenPackage("software.amazon.awssdk", "sts", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "aws-query-protocol", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "protocol-core", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "profiles", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "sdk-core", "2.4.0"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-core", "2.9.8"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-databind", "2.9.8"),
-            new MavenPackage("software.amazon.awssdk", "auth", "2.4.0"),
-            new MavenPackage("software.amazon", "flow", "1.7"),
-            new MavenPackage("software.amazon.awssdk", "http-client-spi", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "regions", "2.4.0"),
-            new MavenPackage("com.fasterxml.jackson.core", "jackson-annotations", "2.9.0"),
-            new MavenPackage("software.amazon.awssdk", "annotations", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "utils", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "aws-core", "2.4.0"),
-            new MavenPackage("software.amazon.awssdk", "apache-client", "2.4.0"),
-            new MavenPackage("org.apache.httpcomponents", "httpclient", "4.5.6"),
-            new MavenPackage("commons-codec", "commons-codec", "1.10"),
-            new MavenPackage("org.apache.httpcomponents", "httpcore", "4.4.10"),
-            new MavenPackage("com.amazonaws", "aws-java-sdk-core", "1.11.477"),
-            new MavenPackage("commons-logging", "commons-logging", "1.1.3"),
-            new MavenPackage("software.amazon.ion", "ion-java", "1.0.2"),
-            new MavenPackage("joda-time", "joda-time", "2.8.1"),
-            new MavenPackage("ch.qos.logback", "logback-classic", "1.2.3"),
-            new MavenPackage("ch.qos.logback", "logback-core", "1.2.3"),
-            new MavenPackage("com.beust", "jcommander", "1.72"),
-            new MavenPackage("commons-io", "commons-io", "2.6"),
-            new MavenPackage("org.apache.commons", "commons-collections4", "4.2"),
-            new MavenPackage("commons-beanutils", "commons-beanutils", "1.9.3"),
-            new MavenPackage("commons-collections", "commons-collections", "3.2.2")
-        };
+            string xmlns = "{http://maven.apache.org/POM/4.0.0}";
+            XElement mavenRoot = XElement.Load("../pom.xml");
+
+            Dictionary<string, string> commonVersions = new Dictionary<string, string>();
+            foreach (XElement el in mavenRoot.Descendants(xmlns + "properties").Elements())
+            {
+                commonVersions.Add("${" + el.Name.ToString().Replace(xmlns, "") + "}", (string)el);
+            }
+
+            List<MavenPackage> packages = new List<MavenPackage>();
+            foreach (XElement el in mavenRoot.Descendants(xmlns + "dependency"))
+            {
+                string version = (string)el.Element(xmlns + "version");
+                if (commonVersions.ContainsKey(version))
+                {
+                    packages.Add(new MavenPackage(
+                        (string)el.Element(xmlns + "groupId"),
+                        (string)el.Element(xmlns + "artifactId"),
+                        commonVersions[version]));
+                }
+                else
+                {
+                    packages.Add(new MavenPackage(
+                        (string)el.Element(xmlns + "groupId"),
+                        (string)el.Element(xmlns + "artifactId"),
+                        version));
+                }
+            }
+
+            return packages;
+        }
 
         /// <summary>
         /// Downloads all the required jars from Maven and returns a classpath string that includes all those jars.
@@ -302,9 +265,9 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     java,
                     "-cp",
                     javaClassPath,
-                    "software.amazon.kinesis.multilang.MultiLangDaemon",                    
-                    "-p", 
-                    options.PropertiesFile                    
+                    "software.amazon.kinesis.multilang.MultiLangDaemon",
+                    "-p",
+                    options.PropertiesFile
                 };
                 if (!string.IsNullOrEmpty(options.LogbackConfiguration))
                 {
@@ -312,7 +275,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     cmd.Add(options.LogbackConfiguration);
                 }
                 if (options.ShouldExecute)
-                {                    
+                {
                     // Start the KCL.
                     Process proc = new Process
                     {
