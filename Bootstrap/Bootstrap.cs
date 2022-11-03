@@ -9,6 +9,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using CommandLine;
 
@@ -132,7 +133,12 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         private static List<MavenPackage> ParseMavenPackages()
         {
             string xmlns = "{http://maven.apache.org/POM/4.0.0}";
-            XElement mavenRoot = XElement.Load("../pom.xml");
+            
+            XElement mavenRoot;
+            using (Stream pomStream = Assembly.GetEntryAssembly()!.GetManifestResourceStream("Bootstrap.pom.xml")!)
+            {
+                mavenRoot = XElement.Load(pomStream);
+            }
 
             Dictionary<string, string> commonVersions = new Dictionary<string, string>();
             foreach (XElement el in mavenRoot.Descendants(xmlns + "properties").Elements())
