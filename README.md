@@ -150,6 +150,9 @@ all languages.
 
 ## Release Notes
 
+### Release 3.0.1 (October 6, 2023)
+* Bumps com.google.protobuf:protobuf-java from 3.21.5 to 3.21.7 and Bumps jackson-databind from 2.13.4 to 2.13.4.2.
+
 ### Release 3.0.0 (January 12, 2023)
 * Upgraded to use version 2.4.4 of the [Amazon Kinesis Client library][amazon-kcl-github]
 
