@@ -290,6 +290,11 @@
             <artifactId>aws-java-sdk-core</artifactId>
             <version>${aws-java-sdk.version}</version>
         </dependency>
+	<dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-sts</artifactId>
+            <version>${aws-java-sdk.version}</version>
+        </dependency>
         <dependency>
             <groupId>software.amazon.ion</groupId>
             <artifactId>ion-java</artifactId>
