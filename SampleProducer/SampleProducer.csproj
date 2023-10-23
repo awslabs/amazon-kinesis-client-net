@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Kinesis" Version="3.7.1.5" />
+    <PackageReference Include="AWSSDK.Kinesis" Version="3.7.200.59" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
   </ItemGroup>
 
