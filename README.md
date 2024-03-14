@@ -200,7 +200,7 @@ all languages.
 [DefaultAWSCredentialsProviderChain]: http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/auth/DefaultAWSCredentialsProviderChain.html
 [kinesis-forum]: http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169
 [master-zip]: https://github.com/awslabs/amazon-kinesis-client-net/archive/master.zip
-[aws-sdk-dotnet]: http://aws.amazon.com/developers/getting-started/net/
+[aws-sdk-dotnet]: https://aws.amazon.com/sdk-for-net/
 [aws-sdk-dotnet-credentials]: http://docs.aws.amazon.com/AWSSdkDocsNET/latest/DeveloperGuide/net-dg-config-creds.html#net-dg-config-creds-creds-file
 [aws-console]: http://aws.amazon.com/console/
 [sample-properties]: https://github.com/awslabs/amazon-kinesis-client-net/blob/master/SampleConsumer/kcl.properties
