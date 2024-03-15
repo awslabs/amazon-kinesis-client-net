@@ -6,6 +6,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using NSubstitute;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace Amazon.Kinesis.ClientLibrary
                 try
                 {
                     kclProcess.Run();
-                    Assert.Fail("Should have seen the ClientException propagate up the call stack.");
+                    ClassicAssert.Fail("Should have seen the ClientException propagate up the call stack.");
                 }
                 catch (ClientException)
                 {
@@ -107,7 +108,7 @@ namespace Amazon.Kinesis.ClientLibrary
             try
             {
                 kclProcess.Run();
-                Assert.Fail("Should have thrown a MalformedActionException");
+                ClassicAssert.Fail("Should have thrown a MalformedActionException");
             }
             catch (MalformedActionException)
             {
@@ -156,7 +157,7 @@ namespace Amazon.Kinesis.ClientLibrary
 
             KclProcess.Create(recordProcessor, _ioHandler).Run();
 
-            Assert.IsTrue(madeItPastCheckpoint,
+            ClassicAssert.IsTrue(madeItPastCheckpoint,
                 "Code after checkpoint should've executed even though checkpointing failed.");
         }
 
@@ -184,28 +185,28 @@ namespace Amazon.Kinesis.ClientLibrary
             List<Action> outputActions = ParseActionsFromOutput();
 
             dynamic a = outputActions[0];
-            Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == InitializeAction.ACTION);
+            ClassicAssert.IsTrue(a is StatusAction);
+            ClassicAssert.IsTrue(a.ResponseFor == InitializeAction.ACTION);
 
 
             a = outputActions[1];
-            Assert.IsTrue(a is CheckpointAction);
-            Assert.IsTrue(a.SequenceNumber == "456" && a.Error == null);
+            ClassicAssert.IsTrue(a is CheckpointAction);
+            ClassicAssert.IsTrue(a.SequenceNumber == "456" && a.Error == null);
 
 
             a = outputActions[2];
-            Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == ProcessRecordsAction.ACTION);
+            ClassicAssert.IsTrue(a is StatusAction);
+            ClassicAssert.IsTrue(a.ResponseFor == ProcessRecordsAction.ACTION);
 
 
             a = outputActions[3];
-            Assert.IsTrue(a is CheckpointAction);
-            Assert.IsTrue(a.SequenceNumber == null && a.Error == null);
+            ClassicAssert.IsTrue(a is CheckpointAction);
+            ClassicAssert.IsTrue(a.SequenceNumber == null && a.Error == null);
            
 
             a = outputActions[4];
-            Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == ShardEndedAction.ACTION);
+            ClassicAssert.IsTrue(a is StatusAction);
+            ClassicAssert.IsTrue(a.ResponseFor == ShardEndedAction.ACTION);
         }
         
         /// <summary>
@@ -230,23 +231,23 @@ namespace Amazon.Kinesis.ClientLibrary
             List<Action> outputActions = ParseActionsFromOutput();
 
             dynamic a = outputActions[0];
-            Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == InitializeAction.ACTION);            
+            ClassicAssert.IsTrue(a is StatusAction);
+            ClassicAssert.IsTrue(a.ResponseFor == InitializeAction.ACTION);
 
 
             a = outputActions[1];
-            Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == ProcessRecordsAction.ACTION);
+            ClassicAssert.IsTrue(a is StatusAction);
+            ClassicAssert.IsTrue(a.ResponseFor == ProcessRecordsAction.ACTION);
 
 
             a = outputActions[2];
-            Assert.IsTrue(a is CheckpointAction);
-            Assert.IsTrue(a.SequenceNumber == null && a.Error == null);
+            ClassicAssert.IsTrue(a is CheckpointAction);
+            ClassicAssert.IsTrue(a.SequenceNumber == null && a.Error == null);
            
 
             a = outputActions[3];
-            Assert.IsTrue(a is StatusAction);
-            Assert.IsTrue(a.ResponseFor == ShutdownRequestedAction.ACTION);
+            ClassicAssert.IsTrue(a is StatusAction);
+            ClassicAssert.IsTrue(a.ResponseFor == ShutdownRequestedAction.ACTION);
         }
 
         /// <summary>
@@ -276,7 +277,7 @@ namespace Amazon.Kinesis.ClientLibrary
 
             KclProcess.Create(recordProcessor, _ioHandler).Run();
 
-            Assert.IsTrue(handlerCodeCalled);
+            ClassicAssert.IsTrue(handlerCodeCalled);
         }
 
         /// <summary>
@@ -315,32 +316,32 @@ namespace Amazon.Kinesis.ClientLibrary
 
             int i = 0;
             dynamic a = outputActions[i++];
-            Assert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
-            Assert.AreEqual(InitializeAction.ACTION, a.ResponseFor);
+            ClassicAssert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
+            ClassicAssert.AreEqual(InitializeAction.ACTION, a.ResponseFor);
 
             for (int j = 0; j <= numRetries; j++)
             {
                 a = outputActions[i++];
-                Assert.IsTrue(a is CheckpointAction, "Action " + (i - 1) + " should be CheckpointAction");
-                Assert.AreEqual("456", a.SequenceNumber);
-                Assert.IsNull(a.Error);
+                ClassicAssert.IsTrue(a is CheckpointAction, "Action " + (i - 1) + " should be CheckpointAction");
+                ClassicAssert.AreEqual("456", a.SequenceNumber);
+                ClassicAssert.IsNull(a.Error);
             }
 
             a = outputActions[i++];
-            Assert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
-            Assert.AreEqual(ProcessRecordsAction.ACTION, a.ResponseFor);
+            ClassicAssert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
+            ClassicAssert.AreEqual(ProcessRecordsAction.ACTION, a.ResponseFor);
 
             for (int j = 0; j <= numRetries; j++)
             {
                 a = outputActions[i++];
-                Assert.IsTrue(a is CheckpointAction, "Action " + (i - 1) + " should be CheckpointAction");
-                Assert.IsNull(a.SequenceNumber);
-                Assert.IsNull(a.Error);
+                ClassicAssert.IsTrue(a is CheckpointAction, "Action " + (i - 1) + " should be CheckpointAction");
+                ClassicAssert.IsNull(a.SequenceNumber);
+                ClassicAssert.IsNull(a.Error);
             }
 
             a = outputActions[i++];
-            Assert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
-            Assert.AreEqual(ShardEndedAction.ACTION, a.ResponseFor);
+            ClassicAssert.IsTrue(a is StatusAction, "Action " + (i - 1) + " should be StatusAction");
+            ClassicAssert.AreEqual(ShardEndedAction.ACTION, a.ResponseFor);
 
         }
 
