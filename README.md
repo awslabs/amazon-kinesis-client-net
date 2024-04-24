@@ -155,14 +155,13 @@ all languages.
 * Upgraded netcoreapp from 5.0 to 6.0
 * Upgraded awssdk.version from 2.19.2 to 2.19.16
 * Upgraded fasterxml-jackson.version from 2.13.4 to 2.14.5
-* Upgraded protobuf-java from 3.21.5 to 3.23.0
+* Upgraded com.google.protobuf:protobuf-java from 3.21.5 to 3.23.0
 * Upgraded aws-java-sdk-core from 1.12.370 to 1.12.468
 * Upgraded error_prone_annotations from 2.7.1 to 2.19.1
 * Upgraded NSubstitute from 3.1.0 to 5.1.0
 * Upgraded Stateless from 2.5.11.0 to 5.13.0
 * Upgraded MSTest.TestFramework from 1.3.2 to 3.1.1
 * Upgraded MSTest.TestAdapter from 1.3.2 to 3.1.1
-* Upgraded com.google.protobuf:protobuf-java from 3.21.5 to 3.21.7
 * Upgraded jackson-databind from 2.13.4 to 2.13.4.2
 * Upgraded guava from 31.0.1-jre to 32.1.1-jre
 * Upgraded io.netty:netty-codec-http from 4.1.86.Final to 4.1.108.Final
