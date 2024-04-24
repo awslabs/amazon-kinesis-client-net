@@ -150,6 +150,34 @@ all languages.
 
 ## Release Notes
 
+### Release 3.0.1 (April 24, 2024)
+* Upgraded amazon-kinesis-client from 2.4.4 to 2.5.8
+* Upgraded netcoreapp from 5.0 to 6.0
+* Upgraded awssdk.version from 2.19.2 to 2.19.16
+* Upgraded fasterxml-jackson.version from 2.13.4 to 2.14.5
+* Upgraded protobuf-java from 3.21.5 to 3.23.0
+* Upgraded aws-java-sdk-core from 1.12.370 to 1.12.468
+* Upgraded error_prone_annotations from 2.7.1 to 2.19.1
+* Upgraded NSubstitute from 3.1.0 to 5.1.0
+* Upgraded Stateless from 2.5.11.0 to 5.13.0
+* Upgraded MSTest.TestFramework from 1.3.2 to 3.1.1
+* Upgraded MSTest.TestAdapter from 1.3.2 to 3.1.1
+* Upgraded com.google.protobuf:protobuf-java from 3.21.5 to 3.21.7
+* Upgraded jackson-databind from 2.13.4 to 2.13.4.2
+* Upgraded guava from 31.0.1-jre to 32.1.1-jre
+* Upgraded io.netty:netty-codec-http from 4.1.86.Final to 4.1.108.Final
+* Upgraded Microsoft.Extensions.DependencyInjection from 6.0.0 to 8.0.0
+* Upgraded ch.qos.logback:logback-core from 1.3.0 to 1.3.12
+* Upgraded Microsoft.NET.Test.Sdk from 15.5.0 to 17.9.0
+* Upgraded AWSSDK.Kinesis from 3.7.1.5 to 3.7.301.73
+* Upgraded commons-collections4 from 4.2 to 4.4
+* Upgraded commons-logging from 1.1.3 to 1.2
+* Upgraded NUnit3TestAdapter from 3.9.0 to 4.5.0
+* Upgraded CommandLineParser from 2.2.1 to 2.9.1
+* Upgraded Microsoft.NET.Test.Sdk from 15.5.0 to 17.9.0
+* Upgraded NUnit from 3.9.0 to 4.1.0
+* Upgraded ion-java from 1.5.1 to 1.11.4
+
 ### Release 3.0.0 (January 12, 2023)
 * Upgraded to use version 2.4.4 of the [Amazon Kinesis Client library][amazon-kcl-github]
 
