@@ -1,19 +1,86 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="../packages/MSTest.TestAdapter.3.4.0/build/net6.0/MSTest.TestAdapter.props" Condition="Exists('../packages/MSTest.TestAdapter.3.4.0/build/net6.0/MSTest.TestAdapter.props')" />
+  <Import Project="../packages/Microsoft.Testing.Extensions.Telemetry.1.2.1/build/net6.0/Microsoft.Testing.Extensions.Telemetry.props" Condition="Exists('../packages/Microsoft.Testing.Extensions.Telemetry.1.2.1/build/net6.0/Microsoft.Testing.Extensions.Telemetry.props')" />
+  <Import Project="../packages/Microsoft.Testing.Platform.MSBuild.1.2.1/build/net6.0/Microsoft.Testing.Platform.MSBuild.props" Condition="Exists('../packages/Microsoft.Testing.Platform.MSBuild.1.2.1/build/net6.0/Microsoft.Testing.Platform.MSBuild.props')" />
+  <Import Project="../packages/Microsoft.Testing.Platform.1.2.1/build/net6.0/Microsoft.Testing.Platform.props" Condition="Exists('../packages/Microsoft.Testing.Platform.1.2.1/build/net6.0/Microsoft.Testing.Platform.props')" />
   <PropertyGroup>
     <TargetFramework>netcoreapp6.0</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="NUnit" Version="4.1.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\ClientLibrary\ClientLibrary.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.22.0.997, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.22.0\lib\netstandard2.0\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Testing.Extensions.Telemetry, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Extensions.Telemetry.1.2.1\lib\net6.0\Microsoft.Testing.Extensions.Telemetry.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Testing.Extensions.TrxReport.Abstractions, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Extensions.TrxReport.Abstractions.1.2.1\lib\net6.0\Microsoft.Testing.Extensions.TrxReport.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Testing.Extensions.VSTestBridge, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Extensions.VSTestBridge.1.2.1\lib\net6.0\Microsoft.Testing.Extensions.VSTestBridge.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Testing.Platform, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Platform.1.2.1\lib\net6.0\Microsoft.Testing.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Testing.Platform.MSBuild, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.Testing.Platform.MSBuild.1.2.1\lib\net6.0\Microsoft.Testing.Platform.MSBuild.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.TestPlatform.CoreUtilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.17.10.0\lib\netcoreapp3.1\Microsoft.TestPlatform.CoreUtilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.TestPlatform.PlatformAbstractions, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.17.10.0\lib\netcoreapp3.1\Microsoft.TestPlatform.PlatformAbstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.17.10.0\lib\netcoreapp3.1\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\net6.0\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net6.0\System.Diagnostics.DiagnosticSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Reflection.Metadata.8.0.0\lib\net6.0\System.Reflection.Metadata.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net6.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('../packages/Microsoft.Testing.Platform.1.2.1/build/net6.0/Microsoft.Testing.Platform.props')" Text="$([System.String]::Format('$(ErrorText)', '../packages/Microsoft.Testing.Platform.1.2.1/build/net6.0/Microsoft.Testing.Platform.props'))" />
+    <Error Condition="!Exists('../packages/Microsoft.Testing.Platform.MSBuild.1.2.1/build/net6.0/Microsoft.Testing.Platform.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '../packages/Microsoft.Testing.Platform.MSBuild.1.2.1/build/net6.0/Microsoft.Testing.Platform.MSBuild.props'))" />
+    <Error Condition="!Exists('../packages/Microsoft.Testing.Platform.MSBuild.1.2.1/build/net6.0/Microsoft.Testing.Platform.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '../packages/Microsoft.Testing.Platform.MSBuild.1.2.1/build/net6.0/Microsoft.Testing.Platform.MSBuild.targets'))" />
+    <Error Condition="!Exists('../packages/Microsoft.Testing.Extensions.Telemetry.1.2.1/build/net6.0/Microsoft.Testing.Extensions.Telemetry.props')" Text="$([System.String]::Format('$(ErrorText)', '../packages/Microsoft.Testing.Extensions.Telemetry.1.2.1/build/net6.0/Microsoft.Testing.Extensions.Telemetry.props'))" />
+    <Error Condition="!Exists('../packages/MSTest.TestAdapter.3.4.0/build/net6.0/MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '../packages/MSTest.TestAdapter.3.4.0/build/net6.0/MSTest.TestAdapter.props'))" />
+    <Error Condition="!Exists('../packages/MSTest.TestAdapter.3.4.0/build/net6.0/MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '../packages/MSTest.TestAdapter.3.4.0/build/net6.0/MSTest.TestAdapter.targets'))" />
+  </Target>
+  <Import Project="../packages/Microsoft.Testing.Platform.MSBuild.1.2.1/build/net6.0/Microsoft.Testing.Platform.MSBuild.targets" Condition="Exists('../packages/Microsoft.Testing.Platform.MSBuild.1.2.1/build/net6.0/Microsoft.Testing.Platform.MSBuild.targets')" />
+  <Import Project="../packages/MSTest.TestAdapter.3.4.0/build/net6.0/MSTest.TestAdapter.targets" Condition="Exists('../packages/MSTest.TestAdapter.3.4.0/build/net6.0/MSTest.TestAdapter.targets')" />
 </Project>
