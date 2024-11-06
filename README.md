@@ -258,7 +258,6 @@ all languages.
 [amazon-kinesis-ruby-github]: https://github.com/awslabs/amazon-kinesis-client-ruby
 [amazon-kinesis-nodejs-github]: https://github.com/awslabs/amazon-kinesis-client-nodejs
 [multi-lang-daemon]: https://github.com/awslabs/amazon-kinesis-client/blob/master/amazon-kinesis-client-multilang/src/main/java/com/amazonaws/services/kinesis/multilang/package-info.java
-[DefaultCredentialsProvider]: https://sdk.amazonaws.com/java/api/latest/software/amazon/awssdk/auth/credentials/DefaultCredentialsProvider.html
 [kinesis-forum]: http://developer.amazonwebservices.com/connect/forum.jspa?forumID=169
 [master-zip]: https://github.com/awslabs/amazon-kinesis-client-net/archive/master.zip
 [aws-sdk-dotnet]: https://aws.amazon.com/sdk-for-net/
