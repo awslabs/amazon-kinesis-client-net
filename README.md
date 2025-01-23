@@ -150,6 +150,9 @@ all languages.
 
 ## Release Notes
 
+### Release 3.0.2 (January 22, 2025)
+* Upgraded amazon-kinesis-client from 2.5.8 to 2.6.1 - [Java 2.6.1 release notes](https://github.com/awslabs/amazon-kinesis-client/releases/tag/v2.6.1)
+
 ### Release 3.0.1 (April 24, 2024)
 * Upgraded amazon-kinesis-client from 2.4.4 to 2.5.8
 * Upgraded netcoreapp from 5.0 to 6.0
