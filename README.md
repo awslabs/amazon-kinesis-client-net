@@ -70,6 +70,16 @@ namespace Sample
 For more information about [Amazon Kinesis][amazon-kinesis] and the client libraries, see the
 [official documentation][amazon-kinesis-docs] as well as the [Amazon Kinesis forums][kinesis-forum].
 
+## 🚨Important: Migration to .NET KCL 3.1.0 or later with MultiLangDaemon - Credential Provider Changes Required
+Java KCL version 2.7.0 and later uses AWS SDK for Java 2.x instead of AWS SDK for Java 1.x. For the KCL .NET 3.x versions,
+v3.1.0 is the first .NET release to use Java KCL 2.7.0. All MultiLangDaemon users upgrading from earlier versions must update
+their credential provider configuration in the `.properties` file to use credentials provider name for AWS SDK for Java 2.x.
+Failure to do this will cause your multilang KCL application to fail during startup with credential provider construction errors.
+Please check the following link for the credentials provider mapping and MultiLangDaemon credentials provider configuration guide
+
+- [AWS SDK for Java 1.x to 2.x Credentials Provider Mapping](aws.amazon.com/sdk-for-java/latest/developer-guide/migration-client-credentials.html#credentials-changes-mapping)
+- [KCL Multilang Credentials Provider Configuration Guide](https://github.com/aws/amazon-kinesis-client/blob/master/docs/multilang/configuring-credential-providers.md)
+
 ## Getting started
 
 
@@ -150,6 +160,13 @@ all languages.
 
 ## Release Notes
 
+### Release 3.1.0 (March 12, 2025) IMPORTANT: See section ``Migration to .NET KCL 3.1.0`` to ensure upgrading does not break compatibility
+* [#1444](https://github.com/awslabs/amazon-kinesis-client/pull/1444) Fully remove dependency on the AWS SDK for Java 1.x which will reach [end-of-support by December 31st, 2025](https://aws.amazon.com/blogs/developer/announcing-end-of-support-for-aws-sdk-for-java-v1-x-on-december-31-2025/).
+  * The Glue Schema Registry integration functionality no longer depends on AWS SDK for Java 1.x. Previously, it required this as a transient dependency.
+  * Multilangdaemon has been upgraded to use AWS SDK for Java 2.x. It no longer depends on AWS SDK for Java 1.x.
+* [#254](https://github.com/awslabs/amazon-kinesis-client-net/pull/254) Upgrade logback.version from 1.3.14 to 1.5.16
+* [#254](https://github.com/awslabs/amazon-kinesis-client-net/pull/254) Upgrade netty.version from 4.1.108.Final to 4.1.118.Final
+
 ### Release 3.0.2 (January 22, 2025)
 * Upgraded amazon-kinesis-client from 2.5.8 to 2.6.1 - [Java 2.6.1 release notes](https://github.com/awslabs/amazon-kinesis-client/releases/tag/v2.6.1)
 
@@ -184,7 +201,7 @@ all languages.
 * Upgraded to use version 2.4.4 of the [Amazon Kinesis Client library][amazon-kcl-github]
 
 ### Release 2.0.0 (February 27, 2019)
-* Added support for [Enhanced Fan-Out](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout/).  
+* Added support for [Enhanced Fan-Out](https://aws.amazon.com/blogs/aws/kds-enhanced-fanout/).
   Enhanced Fan-Out provides dedicated throughput per stream consumer, and uses an HTTP/2 push API (SubscribeToShard) to deliver records with lower latency.
 * Updated the Amazon Kinesis Client Library for Java to version 2.1.2.
   * Version 2.1.2 uses 4 additional Kinesis API's  
@@ -201,7 +218,7 @@ all languages.
     `LeaseLost` replaces `Shutdown` where `ShutdownInput.Reason` was `ShutdownReason.ZOMBIE`.
   * Added the `ShardEnded` method which is invoked when all records from a split or merge have been processed.  
     `ShardEnded`  replaces `Shutdown` where `ShutdownInput.Reason` was `ShutdownReason.TERMINATE`.
-  * Added `ShutdownRequested` which provides the record processor a last chance to checkpoint during the Amazon Kinesis Client Library shutdown process before the lease is canceled.  
+  * Added `ShutdownRequested` which provides the record processor a last chance to checkpoint during the Amazon Kinesis Client Library shutdown process before the lease is canceled.
     * To control how long the Amazon Kinesis Client Library waits for the record processors to complete shutdown, add `timeoutInSeconds=<seconds to wait>` to your properties file.
 * Updated the AWS Java SDK version to 2.4.0
 * MultiLangDaemon now provides logging using Logback.
