@@ -86,7 +86,7 @@ namespace Amazon.Kinesis.ClientLibrary.SampleProducer
                 requestRecord.PartitionKey = "partitionKey-" + j;
                 var putResultResponse = kinesisClient.PutRecordAsync(requestRecord).Result;
                 Console.Error.WriteLine(
-                    String.Format("Successfully putrecord {0}:\n\t partition key = {1,15}, shard ID = {2}",
+                    string.Format("Successfully putrecord {0}:\n\t partition key = {1,15}, shard ID = {2}",
                         j, requestRecord.PartitionKey, putResultResponse.ShardId));
             }
 

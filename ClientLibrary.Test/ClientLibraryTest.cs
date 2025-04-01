@@ -312,7 +312,7 @@ namespace Amazon.Kinesis.ClientLibrary
             KclProcess.Create(recordProcessor, _ioHandler).Run();
             List<Action> outputActions = ParseActionsFromOutput();
 
-            Console.Error.WriteLine(String.Join("\n", outputActions.Select(x => x.ToJson()).ToList()));
+            Console.Error.WriteLine(string.Join("\n", outputActions.Select(x => x.ToJson()).ToList()));
 
             int i = 0;
             dynamic a = outputActions[i++];
