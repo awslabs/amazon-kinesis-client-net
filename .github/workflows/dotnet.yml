@@ -56,17 +56,17 @@ jobs:
       - name: Build and Test (ubuntu)
         if: matrix.os == 'ubuntu-latest'
         run: |
-          dotnet build --no-restore --os linux-x64
+          dotnet build --no-restore
           dotnet test --no-build --os linux-x64
 
       - name: Build and Test (macOS)
         if: matrix.os == 'macOS-latest'
         run: |
-          dotnet build --no-restore --os osx-x64
+          dotnet build --no-restore
           dotnet test --no-build --os osx-x64
 
       - name: Build and Test (windows)
         if: matrix.os == 'windows-latest'
         run: |
-          dotnet build --no-restore --os win-x64
+          dotnet build --no-restore
           dotnet test --no-build --os win-x64
