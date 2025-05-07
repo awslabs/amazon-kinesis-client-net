@@ -64,3 +64,4 @@ jobs:
         run: |
           cd SampleProducer
           dotnet add package AWSSDK.Core
+          cd ~/SampleConsumer
