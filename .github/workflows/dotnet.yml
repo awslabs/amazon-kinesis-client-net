@@ -60,9 +60,9 @@ jobs:
       - name: Install AWS SDK
         run: |
           cd SampleProducer
-          dotnet add package AWSSDK.Core
+          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
           cd ../SampleConsumer
-          dotnet add package AWSSDK.Core
+          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
 
       - name: Run KCL Producer
         run: |
