@@ -66,5 +66,5 @@ jobs:
 
       - name: Run KCL Producer
         run: |
-          pwd
+          cd SampleProducer
           dotnet run
