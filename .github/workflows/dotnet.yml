@@ -63,3 +63,9 @@ jobs:
           dotnet add package AWSSDK.Core
           cd ../SampleConsumer
           dotnet add package AWSSDK.Core
+
+      - name: Run KCL Producer
+        run: |
+          cd ../Sample Producer
+          dotnet run
+      
