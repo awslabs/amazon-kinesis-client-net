@@ -53,16 +53,13 @@ jobs:
         run: dotnet --version
 
       - name: Restore dependencies
-        run: |
-          dotnet --version
-          dotnet restore
+        run: dotnet restore
 
-      - name: Build
+      - name: Build and Test
         run: |
-          dotnet --version
           dotnet build --no-restore
-
-      - name: Test
-        run: |
-          dotnet --version
           dotnet test --no-build
+
+      - name: Install AWS SDK
+        run: |
+          dotnet add package AWSSDK.Core
