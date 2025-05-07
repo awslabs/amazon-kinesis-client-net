@@ -22,9 +22,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-#        dotnet-version: [ '6.0.x', '8.0.x' ]
 #        jdk-version: [ "8", "11", "17", "21", "24" ]
-        dotnet-version: [ '6.0.x', '8.0.x' ]
+#        dotnet-version: [ '6.0.x', '8.0.x' ]
         jdk-version: [ "8", "24" ]
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
 
@@ -45,10 +44,10 @@ jobs:
           java-version: ${{ matrix.jdk-version }}
           distribution: 'corretto'
 
-      - name: Set up .NET ${{ matrix.dotnet-version }}
+      - name: Set up .NET 6.0.x
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: '6.0.x'
 
       - name: Restore dependencies
         run: dotnet restore
