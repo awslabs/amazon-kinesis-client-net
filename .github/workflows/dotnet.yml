@@ -45,6 +45,11 @@ jobs:
           java-version: ${{ matrix.jdk-version }}
           distribution: 'corretto'
 
+      - name: Setup .NET ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
       - name: Restore dependencies
         run: dotnet restore
 
