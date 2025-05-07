@@ -1,33 +1,55 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
-
+name: Sample Run and Dependabot Auto-merge
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  pull_request_target:
+    branches: [ master ]
+
+permissions:
+  id-token: write
+  contents: write
 
 jobs:
-  build:
+  sample-run:
+    timeout-minutes: 8
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
 
-    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
+#        dotnet-version: [ '6.0.x', '8.0.x' ]
+#        jdk-version: [ "8", "11", "17", "21", "24" ]
         dotnet-version: [ '6.0.x', '8.0.x' ]
+        jdk-version: [ "8", "24" ]
+        os: [ ubuntu-latest, macOS-latest, windows-latest ]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+      - name: Checkout working directory
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Display dotnet version
-        run: dotnet --version
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::751999266872:role/GitHubWorkflows
+          role-session-name: myGitHubActions
+
+      - name: Set up JDK ${{ matrix.jdk-version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.jdk-version }}
+          distribution: 'corretto'
+
       - name: Restore dependencies
         run: dotnet restore
+
       - name: Build
         run: dotnet build --no-restore
+
       - name: Test
         run: dotnet test --no-build --verbosity normal
