@@ -24,7 +24,7 @@ jobs:
       matrix:
 #        dotnet-version: [ '6.0.x', '8.0.x' ]
 #        jdk-version: [ "8", "11", "17", "21", "24" ]
-        dotnet-version: [ '6.0.x', '7.0.x', '8.0.x' ]
+        dotnet-version: [ '7.0.x', '8.0.x' ]
         jdk-version: [ "8", "24" ]
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
 
@@ -53,20 +53,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build and Test (ubuntu)
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          dotnet build --no-restore
-          dotnet test --no-build --os linux-x64
+      - name: Build
+        run: dotnet build --no-restore
 
-      - name: Build and Test (macOS)
-        if: matrix.os == 'macOS-latest'
-        run: |
-          dotnet build --no-restore
-          dotnet test --no-build --os osx-x64
-
-      - name: Build and Test (windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          dotnet build --no-restore
-          dotnet test --no-build --os win-x64
+      - name: Test
+        run: dotnet test --no-build
