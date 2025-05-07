@@ -49,11 +49,20 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
+      - name: Display dotnet version
+        run: dotnet --version
+
       - name: Restore dependencies
-        run: dotnet restore
+        run: |
+          dotnet --version
+          dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore
+        run: |
+          dotnet --version
+          dotnet build --no-restore
 
       - name: Test
-        run: dotnet test --no-build
+        run: |
+          dotnet --version
+          dotnet test --no-build
