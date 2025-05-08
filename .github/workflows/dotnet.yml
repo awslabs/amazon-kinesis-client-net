@@ -72,8 +72,7 @@ jobs:
       - name: Run KCL consumer (windows or ubuntu)
         if: ${{ matrix.os != 'macOS-latest'}}
         run: |
-          dotnet build --no-restore
-          dotnet run --project SampleConsumer.dll --properties kcl.properties --execute
+          dotnet SampleConsumer.dll
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
