@@ -80,5 +80,5 @@ jobs:
         if: ${{ matrix.os == 'macOS-latest'}}
         run: |
           brew install coreutils
-          cd Bootstrap
+          cd Bootstrap/Properties
           gtimeout 45 dotnet run --properties kcl.properties --execute
