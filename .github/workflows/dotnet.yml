@@ -73,6 +73,7 @@ jobs:
         if: ${{ matrix.os != 'macOS-latest'}}
         run: |
           cd SampleConsumer
+          dotnet build
           dotnet run --properties kcl.properties --execute
 
       - name: Run KCL consumer (macOS)
@@ -80,4 +81,5 @@ jobs:
         run: |
           brew install coreutils
           cd Bootstrap/Properties
+          dotnet build
           dotnet run --project ../../SampleConsumer --properties kcl.properties --execute
