@@ -72,7 +72,7 @@ jobs:
       - name: Run KCL consumer (windows or ubuntu)
         if: ${{ matrix.os != 'macOS-latest'}}
         run: |
-          dotnet SampleConsumer.dll
+          dotnet run SampleConsumer.csproj
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
