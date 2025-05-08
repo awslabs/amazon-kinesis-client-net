@@ -73,11 +73,11 @@ jobs:
         if: ${{ matrix.os != 'macOS-latest'}}
         run: |
           cd Bootstrap
-          timeout 45 dotnet run --properties kcl.properties || status="$?"; if (( status == 124 )); then exit 0; else exit 1; fi; exit "$status"
+          timeout 45 dotnet run || status="$?"; if (( status == 124 )); then exit 0; else exit 1; fi; exit "$status"
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
         run: |
           brew install coreutils
           cd SampleConsumer
-          gtimeout 45 dotnet run --properties kcl.properties || status="$?"; if (( status == 124 )); then exit 0; else exit 1; fi; exit "$status"
+          gtimeout 45 dotnet run || status="$?"; if (( status == 124 )); then exit 0; else exit 1; fi; exit "$status"
