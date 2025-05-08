@@ -81,5 +81,5 @@ jobs:
         run: |
           brew install coreutils
           cd Bootstrap/Properties
-          dotnet build
+          dotnet build --project ../../SampleConsumer
           dotnet run --project ../../SampleConsumer --properties kcl.properties --execute
