@@ -72,7 +72,7 @@ jobs:
       - name: Run KCL consumer (windows or ubuntu)
         if: ${{ matrix.os != 'macOS-latest'}}
         run: |
-          cd SampleConsumer
+          cd Bootstrap
           dotnet build
           timeout 45 dotnet run --properties kcl.properties --execute
 
@@ -80,5 +80,5 @@ jobs:
         if: ${{ matrix.os == 'macOS-latest'}}
         run: |
           brew install coreutils
-          cd SampleConsumer
+          cd Bootstrap
           gtimeout 45 dotnet run --properties kcl.properties --execute
