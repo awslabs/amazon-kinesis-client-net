@@ -64,10 +64,10 @@ jobs:
           cd ../SampleConsumer
           dotnet add package AWSSDK.Kinesis --version 4.0.2.1
 
-      - name: Run KCL Producer
-        run: |
-          cd SampleProducer
-          dotnet run
+#      - name: Run KCL Producer
+#        run: |
+#          cd SampleProducer
+#          dotnet run
 
       - name: Run KCL consumer (windows or ubuntu)
         if: ${{ matrix.os != 'macOS-latest'}}
