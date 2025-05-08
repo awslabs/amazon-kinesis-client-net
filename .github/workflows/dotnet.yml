@@ -72,8 +72,8 @@ jobs:
       - name: Run KCL consumer (windows or ubuntu)
         if: ${{ matrix.os != 'macOS-latest'}}
         run: |
-          cd Bootstrap/Properties
-          dotnet run --project ../../SampleConsumer --properties kcl.properties --execute
+          cd SampleConsumer
+          dotnet run --properties kcl.properties --execute
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
