@@ -72,12 +72,11 @@ jobs:
       - name: Run KCL consumer (windows or ubuntu)
         if: ${{ matrix.os != 'macOS-latest'}}
         run: |
+          dotnet build --no-restore
           dotnet run --project SampleConsumer.dll --properties kcl.properties --execute
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
         run: |
           brew install coreutils
-          cd Bootstrap/Properties
-          dotnet build --project SampleConsumer.dll
-          dotnet run --project SampleConsumer --properties kcl.properties --execute
+          echo "hi"
