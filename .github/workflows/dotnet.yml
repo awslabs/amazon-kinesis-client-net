@@ -24,7 +24,7 @@ jobs:
       matrix:
 #        jdk-version: [ "8", "11", "17", "21", "24" ]
 #        dotnet-version: [ '6.0.x', '8.0.x' ]
-        jdk-version: [ "8", "24" ]
+        jdk-version: [ "8", "11", "17", "21", "24" ]
         os: [ ubuntu-latest, macOS-latest, windows-latest ]
 
     steps:
