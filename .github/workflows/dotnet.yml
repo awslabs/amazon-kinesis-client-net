@@ -71,8 +71,7 @@ jobs:
 
       - name: Run KCL consumer (ubuntu and windows)
         if: ${{ matrix.os == 'ubuntu-latest'}}
-        run: |
-          echo "hi"
+        run: echo "hi"
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
