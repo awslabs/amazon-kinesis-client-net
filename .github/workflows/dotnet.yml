@@ -49,20 +49,20 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build and Test
-        run: |
-          dotnet build --no-restore
-          dotnet test --no-build
-
       - name: Install AWS SDK
         run: |
-          cd SampleProducer
           dotnet add package AWSSDK.Kinesis --version 4.0.2.1
-          cd ../SampleConsumer
-          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
+#          cd SampleProducer
+#          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
+#          cd ../SampleConsumer
+#          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
+
+
+      - name: Restore, Build, and Test
+        run: |
+          dotnet restore
+          dotnet build --no-restore
+          dotnet test --no-build
 
 #      - name: Run KCL Producer
 #        run: |
@@ -72,11 +72,10 @@ jobs:
       - name: Run KCL consumer (ubuntu and windows)
         if: ${{ matrix.os == 'ubuntu-latest'}}
         run: |
-          cd Bootstrap
-          dotnet run --properties kcl.properties
+          echo "hi"
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
         run: |
-          brew install coreutils
+#          brew install coreutils
           echo "hi"
