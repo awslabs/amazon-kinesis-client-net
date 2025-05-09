@@ -68,10 +68,10 @@ jobs:
           cd ../ClientLibrary.Test
           dotnet add package AWSSDK.Kinesis --version 4.0.2.1
 
-#      - name: Run KCL Producer
-#        run: |
-#          cd SampleProducer
-#          dotnet run
+      - name: Run KCL Producer
+        run: |
+          cd SampleProducer
+          dotnet run
 
       - name: Run KCL consumer (ubuntu and windows)
         if: ${{ matrix.os != 'macOS-latest'}}
@@ -82,5 +82,6 @@ jobs:
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
         run: |
+          brew install coreutils
           cd SampleConsumer
           gtimeout 45 dotnet run --project ../Bootstrap/Bootstrap.csproj --properties kcl.properties --execute || status="$?"; if (( status == 124 )); then exit 0; else exit 1; fi; exit "$status"
