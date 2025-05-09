@@ -76,11 +76,11 @@ jobs:
       - name: Run KCL consumer (ubuntu and windows)
         if: ${{ matrix.os == 'ubuntu-latest'}}
         run: |
-          cd Bootstrap
-          dotnet run --project Bootstrap/Bootstrap.csproj --properties kcl.properties --execute || echo "hi"
+          cd SampleConsumer
+          dotnet run --project Bootstrap.csproj --properties kcl.properties --execute || echo "hi"
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
         run: |
-          cd Bootstrap
-          dotnet run --project Bootstrap/Bootstrap.csproj --properties kcl.properties --execute || echo "hi"
+          cd SampleConsumer
+          dotnet run --project ../Bootstrap/Bootstrap.csproj --properties kcl.properties --execute || echo "hi"
