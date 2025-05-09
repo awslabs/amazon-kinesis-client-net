@@ -77,10 +77,10 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest'}}
         run: |
           cd Bootstrap
-          dotnet run || echo "hi"
+          dotnet run --properties kcl.properties --execute || echo "hi"
 
       - name: Run KCL consumer (macOS)
         if: ${{ matrix.os == 'macOS-latest'}}
         run: |
           cd Bootstrap
-          dotnet run || echo "hi"
+          dotnet run --properties kcl.properties --execute || echo "hi"
