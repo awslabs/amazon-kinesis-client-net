@@ -3,6 +3,7 @@
 
 name: Sample Run and Dependabot Auto-merge
 on:
+  push:
   pull_request_target:
     branches: [ master ]
 
@@ -52,17 +53,13 @@ jobs:
           dotnet build --no-restore
           dotnet test --no-build
 
-      - name: Install AWS SDK
+      - name: Install AWS SDK into projects
         run: |
           cd SampleProducer
           dotnet add package AWSSDK.Kinesis --version 4.0.2.1
           cd ../SampleConsumer
           dotnet add package AWSSDK.Kinesis --version 4.0.2.1
           cd ../Bootstrap
-          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
-          cd ../ClientLibrary
-          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
-          cd ../ClientLibrary.Test
           dotnet add package AWSSDK.Kinesis --version 4.0.2.1
 
       - name: Run KCL Producer
