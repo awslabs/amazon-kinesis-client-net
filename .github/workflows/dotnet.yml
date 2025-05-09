@@ -3,6 +3,7 @@
 
 name: Sample Run and Dependabot Auto-merge
 on:
+  push:
   pull_request_target:
     branches: [ master ]
 
