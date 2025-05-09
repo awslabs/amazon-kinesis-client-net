@@ -49,20 +49,19 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Install AWS SDK
-        run: |
-          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
-#          cd SampleProducer
-#          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
-#          cd ../SampleConsumer
-#          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
-
-
       - name: Restore, Build, and Test
         run: |
           dotnet restore
           dotnet build --no-restore
           dotnet test --no-build
+
+      - name: Install AWS SDK
+        run: |
+          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
+      #          cd SampleProducer
+      #          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
+      #          cd ../SampleConsumer
+      #          dotnet add package AWSSDK.Kinesis --version 4.0.2.1
 
 #      - name: Run KCL Producer
 #        run: |
