@@ -58,7 +58,7 @@ jobs:
       - name: Install AWS SDK into projects
         run: |
           cd SampleProducer
-          dotnet add package AWSSDK.Kinesis --version ${{ AWS_SDK_Version }}
+          dotnet add package AWSSDK.Kinesis --version ${{ env.AWS_SDK_Version }}
         env:
           AWS_SDK_Version: '4.0.2.1'
 
