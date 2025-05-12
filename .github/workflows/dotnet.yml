@@ -1,33 +1,99 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
-
+name: Sample Run and Dependabot Auto-merge
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches: [ master ]
+  pull_request_target:
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
 
 jobs:
-  build:
+  sample-run:
+    timeout-minutes: 8
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
 
-    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        dotnet-version: [ '6.0.x', '8.0.x' ]
+        jdk-version: [ "8", "11", "17", "21", "24" ]
+        os: [ ubuntu-latest, macOS-latest, windows-latest ]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
+      - name: Checkout working directory
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
-      - name: Display dotnet version
-        run: dotnet --version
-      - name: Restore dependencies
-        run: dotnet restore
-      - name: Build
-        run: dotnet build --no-restore
-      - name: Test
-        run: dotnet test --no-build --verbosity normal
+          aws-region: us-east-1
+          role-to-assume: arn:aws:iam::751999266872:role/GitHubNet
+          role-session-name: myGitHubActionsNet
+
+      - name: Set up JDK ${{ matrix.jdk-version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.jdk-version }}
+          distribution: 'corretto'
+
+      - name: Set up .NET 6.0.x
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Restore, Build, and Test
+        run: |
+          dotnet restore
+          dotnet build --no-restore
+          dotnet test --no-build
+
+      - name: Install AWS SDK into projects
+        run: |
+          cd SampleProducer
+          dotnet add package AWSSDK.Kinesis --version ${{ env.AWS_SDK_Version }}
+        env:
+          AWS_SDK_Version: '4.0.2.1'
+
+      - name: Run KCL Producer
+        run: |
+          cd SampleProducer
+          dotnet run
+
+      - name: Run KCL consumer (ubuntu and windows)
+        if: ${{ matrix.os != 'macOS-latest'}}
+        run: |
+          cd SampleConsumer
+          timeout 45 dotnet run --project ../Bootstrap/Bootstrap.csproj --properties kcl.properties --execute || status="$?"; if (( status == 124 )); then exit 0; else exit 1; fi; exit "$status"
+
+      - name: Run KCL consumer (macOS)
+        if: ${{ matrix.os == 'macOS-latest'}}
+        run: |
+          brew install coreutils
+          cd SampleConsumer
+          gtimeout 45 dotnet run --project ../Bootstrap/Bootstrap.csproj --properties kcl.properties --execute || status="$?"; if (( status == 124 )); then exit 0; else exit 1; fi; exit "$status"
+
+  auto-merge-dependabot:
+    needs: [sample-run]
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          alert-lookup: true
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Enable auto-merge for Dependabot PRs
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
+        run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
