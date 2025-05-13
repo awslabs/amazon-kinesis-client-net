@@ -51,8 +51,7 @@ jobs:
 
       - name: Restore, Build, and Test
         run: |
-          dotnet restore
-          dotnet build --no-restore
+          dotnet build
           dotnet test --no-build
 
       - name: Install AWS SDK into projects
