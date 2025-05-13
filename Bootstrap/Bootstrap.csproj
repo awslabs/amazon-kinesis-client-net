@@ -3,7 +3,7 @@
   <PropertyGroup>
    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netstandard2.0;netcoreapp6.0</TargetFrameworks>
+    <TargetFrameworks>netcoreapp6.0;net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
