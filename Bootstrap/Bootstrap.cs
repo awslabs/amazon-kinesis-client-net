@@ -80,7 +80,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     {
                         throw new Exception($"Failed to download {FileName} after {maxRetries} attempts: {ex.Message}", ex);
                     }
-                }
+
             }
         }
 
