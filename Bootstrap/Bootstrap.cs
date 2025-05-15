@@ -232,6 +232,8 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error finding Java: {ex.Message}");
+                return null;
             }
             //TODO find away to read from registery on different OSs
             // Failing that, look in the registry.
