@@ -85,8 +85,6 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     {
                         if (i == maxRetries - 1)
                             throw new Exception($"Failed to download {FileName} after {maxRetries} attempts: {ex.Message}", ex);
-
-                        await Task.Delay(1000 * (i + 1)); // Exponential backoff
                     }
                 }
             }
