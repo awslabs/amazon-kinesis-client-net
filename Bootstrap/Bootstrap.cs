@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using System.Net.Http;
-using System.Threading.Tasks
+using System.Threading.Tasks;
 using CommandLine;
 
 namespace Amazon.Kinesis.ClientLibrary.Bootstrap
