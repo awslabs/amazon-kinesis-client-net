@@ -190,7 +190,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
 
             foreach (MavenPackage mp in MAVEN_PACKAGES)
             {
-                mp.Fetch(jarFolder);
+                await mp.Fetch(jarFolder);
             }
 
             Console.Error.WriteLine("Done.");
