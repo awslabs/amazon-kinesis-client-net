@@ -86,7 +86,7 @@ namespace Amazon.Kinesis.ClientLibrary.SampleConsumer
 
                         // Uncomment the following if you wish to see the retrieved record data.
                         //Console.Error.WriteLine(
-                        //    String.Format("Retrieved record:\n\tpartition key = {0},\n\tsequence number = {1},\n\tdata = {2}",
+                        //    string.Format("Retrieved record:\n\tpartition key = {0},\n\tsequence number = {1},\n\tdata = {2}",
                         //    rec.PartitionKey, rec.SequenceNumber, data));
 
                         // Your own logic to process a record goes here.

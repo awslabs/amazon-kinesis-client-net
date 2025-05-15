@@ -20,20 +20,20 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
     /// </summary>
     internal class MavenPackage
     {
-        public readonly String GroupId;
-        public readonly String ArtifactId;
-        public readonly String Version;
+        public readonly string GroupId;
+        public readonly string ArtifactId;
+        public readonly string Version;
 
         /// <summary>
         /// Gets the name of the jar file of this Maven package.
         /// </summary>
         /// <value>The name of the jar file.</value>
-        public String FileName
+        public string FileName
         {
-            get { return String.Format("{0}-{1}.jar", ArtifactId, Version); }
+            get { return string.Format("{0}-{1}.jar", ArtifactId, Version); }
         }
 
-        public MavenPackage(String groupId, String artifactId, String version)
+        public MavenPackage(string groupId, string artifactId, string version)
         {
             GroupId = groupId;
             ArtifactId = artifactId;
@@ -44,7 +44,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         /// Check if the jar file for this Maven package already exists on disk.
         /// </summary>
         /// <param name="folder">Folder to look in.</param>
-        public bool Exists(String folder)
+        public bool Exists(string folder)
         {
             return File.Exists(Path.Combine(folder, FileName));
         }
@@ -53,14 +53,14 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         /// Download the jar file for this Maven package.
         /// </summary>
         /// <param name="folder">Folder to download the file into.</param>
-        public void Fetch(String folder)
+        public void Fetch(string folder)
         {
             if (!Directory.Exists(folder))
             {
                 Directory.CreateDirectory(folder);
             }
 
-            String destination = Path.Combine(folder, FileName);
+            string destination = Path.Combine(folder, FileName);
             if (!File.Exists(destination))
             {
                 var client = new WebClient();
@@ -74,16 +74,16 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         /// Gets the URL to the jar file for this Maven package.
         /// </summary>
         /// <value>The URL.</value>
-        private String Url
+        private string Url
         {
             get
             {
-                List<String> urlParts = new List<String>();
+                List<string> urlParts = new List<string>();
                 urlParts.AddRange(GroupId.Split('.'));
                 urlParts.Add(ArtifactId);
                 urlParts.Add(Version);
                 urlParts.Add(FileName);
-                return "https://search.maven.org/remotecontent?filepath=" + String.Join("/", urlParts);
+                return "https://search.maven.org/remotecontent?filepath=" + string.Join("/", urlParts);
             }
         }
     }
