@@ -54,7 +54,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         /// Download the jar file for this Maven package.
         /// </summary>
         /// <param name="folder">Folder to download the file into.</param>
-        public async Fetch(String folder)
+        public void Fetch(String folder)
         {
             if (!Directory.Exists(folder))
             {
@@ -67,11 +67,11 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                 Console.Error.WriteLine(Url + " --> " + destination);
-                using var response = await client.GetAsync(new Uri(Url));
+                using var response = client.GetAsync(new Uri(Url)).GetAwaiter().GetResult();
                 response.EnsureSuccessStatusCode(); // Throws if the status code is not successful
 
                 using var fs = new FileStream(destination, FileMode.Create);
-                await response.Content.CopyToAsync(fs);
+                response.Content.CopyToAsync(fs).GetAwaiter().GetResult();
             }
         }
 
@@ -189,7 +189,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
 
             foreach (MavenPackage mp in MAVEN_PACKAGES)
             {
-                await mp.Fetch(jarFolder);
+                mp.Fetch(jarFolder);
             }
 
             Console.Error.WriteLine("Done.");
