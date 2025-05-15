@@ -264,13 +264,13 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             return null;
         }
 
-        public static void Main(string[] args)
+        public static async void Main(string[] args)
         {
             var parserResult = Parser.Default.ParseArguments<Options>(args);
 
             parserResult.WithParsed(options =>
             {
-                string javaClassPath = FetchJars(options.JarFolder);
+                Task<string> javaClassPath = await FetchJars(options.JarFolder);
 
                 string java = FindJava(options.JavaLocation);
 
