@@ -64,10 +64,14 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             String destination = Path.Combine(folder, FileName);
             if (!File.Exists(destination))
             {
-                var httpclient = new HttpClient();
-                httpclient.DefaultRequestHeaders.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                 Console.Error.WriteLine(Url + " --> " + destination);
-                httpclient.DownloadFile(new Uri(Url), destination);
+                using var response = await client.GetAsync(new Uri(Url));
+                response.EnsureSuccessStatusCode(); // Throws if the status code is not successful
+
+                using var fs = new FileStream(destination, FileMode.Create);
+                await response.Content.CopyToAsync(fs);
             }
         }
 
