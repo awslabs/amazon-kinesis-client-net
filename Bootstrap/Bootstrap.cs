@@ -190,7 +190,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         /// </summary>
         /// <returns>Classpath string that includes all the jars downloaded.</returns>
         /// <param name="jarFolder">Folder into which to save the jars.</param>
-        private static string FetchJars(string jarFolder)
+        private static async Task<string> FetchJars(string jarFolder)
         {
             if (jarFolder == null)
             {
