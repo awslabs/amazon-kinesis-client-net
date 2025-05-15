@@ -190,7 +190,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         /// </summary>
         /// <returns>Classpath string that includes all the jars downloaded.</returns>
         /// <param name="jarFolder">Folder into which to save the jars.</param>
-        private static async Task<string> FetchJars(string jarFolder)
+        private static string FetchJars(string jarFolder)
         {
             if (jarFolder == null)
             {
@@ -206,7 +206,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
 
             foreach (MavenPackage mp in MAVEN_PACKAGES)
             {
-                await mp.Fetch(jarFolder);
+                mp.Fetch(jarFolder);
             }
 
             Console.Error.WriteLine("Done.");
@@ -264,13 +264,13 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             return null;
         }
 
-        public static async void Main(string[] args)
+        public static void Main(string[] args)
         {
             var parserResult = Parser.Default.ParseArguments<Options>(args);
 
             parserResult.WithParsed(options =>
             {
-                Task<string> javaClassPath = await FetchJars(options.JarFolder);
+                string javaClassPath = FetchJars(options.JarFolder);
 
                 string java = FindJava(options.JavaLocation);
 
