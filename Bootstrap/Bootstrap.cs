@@ -89,7 +89,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                 urlParts.Add(ArtifactId);
                 urlParts.Add(Version);
                 urlParts.Add(FileName);
-                return "https://search.maven.org/remotecontent?filepath=" + String.Join("/", urlParts);
+                return "https://repo1.maven.org/maven2/" + String.Join("/", urlParts);
             }
         }
     }
