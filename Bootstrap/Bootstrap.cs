@@ -63,8 +63,8 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             String destination = Path.Combine(folder, FileName);
             if (!File.Exists(destination))
             {
-                var client = new WebClient();
-                client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
+                HttpClient client = new();
+                client.DefaultRequestHeaders.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
                 Console.Error.WriteLine(Url + " --> " + destination);
                 client.DownloadFile(new Uri(Url), destination);
             }
