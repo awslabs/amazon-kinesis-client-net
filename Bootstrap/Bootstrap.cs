@@ -80,7 +80,6 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     {
                         throw new Exception($"Failed to download {FileName}: {ex.Message}", ex);
                     }
-
             }
         }
 
