@@ -10,3 +10,6 @@ updates:
     open-pull-requests-limit: 4
     schedule:
       interval: "daily"
+    ignore:
+      - dependency-name: 'awssdk.*'
+      - dependency-name: 'logback.*'
