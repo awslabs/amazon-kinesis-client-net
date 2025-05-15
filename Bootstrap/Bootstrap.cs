@@ -55,7 +55,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
         /// Download the jar file for this Maven package.
         /// </summary>
         /// <param name="folder">Folder to download the file into.</param>
-        public async Task Fetch(String folder)
+        public void Fetch(String folder)
         {
             if (!Directory.Exists(folder))
             {
