@@ -63,16 +63,11 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             }
 
             String destination = Path.Combine(folder, FileName);
-            if (!File.Exists(destination))
-            {
+            if (!File.Exists(destination)) {
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)");
 
-                const int maxRetries = 3;
-                for (int i = 0; i < maxRetries; i++)
-                {
-                    try
-                    {
+                    try {
                         Console.Error.WriteLine(Url + " --> " + destination);
                         using var response = client.GetAsync(new Uri(Url)).GetAwaiter().GetResult();
                         response.EnsureSuccessStatusCode();
@@ -83,8 +78,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     }
                     catch (HttpRequestException ex)
                     {
-                        if (i == maxRetries - 1)
-                            throw new Exception($"Failed to download {FileName} after {maxRetries} attempts: {ex.Message}", ex);
+                        throw new Exception($"Failed to download {FileName} after {maxRetries} attempts: {ex.Message}", ex);
                     }
                 }
             }
