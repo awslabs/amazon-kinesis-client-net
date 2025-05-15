@@ -78,7 +78,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     }
                     catch (HttpRequestException ex)
                     {
-                        throw new Exception($"Failed to download {FileName} after {maxRetries} attempts: {ex.Message}", ex);
+                        throw new Exception($"Failed to download {FileName}: {ex.Message}", ex);
                     }
 
             }
