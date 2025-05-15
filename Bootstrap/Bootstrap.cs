@@ -253,8 +253,7 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
             //        }
             //    }
             //}
-
-            return null;
+            //return null;
         }
 
         public static void Main(string[] args)
