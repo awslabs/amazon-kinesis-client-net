@@ -74,11 +74,11 @@ namespace Amazon.Kinesis.ClientLibrary.Bootstrap
                     try
                     {
                         Console.Error.WriteLine(Url + " --> " + destination);
-                        using var response = await client.GetAsync(new Uri(Url));
+                        using var response = client.GetAsync(new Uri(Url)).GetAwaiter().GetResult();
                         response.EnsureSuccessStatusCode();
 
                         using var fs = new FileStream(destination, FileMode.Create);
-                        await response.Content.CopyToAsync(fs);
+                        response.Content.CopyToAsync(fs).GetAwaiter().GetResult();
                         return;
                     }
                     catch (HttpRequestException ex)
