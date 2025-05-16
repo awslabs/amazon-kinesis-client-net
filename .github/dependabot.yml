@@ -12,4 +12,3 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: 'awssdk.*'
-      - dependency-name: 'logback.*'
