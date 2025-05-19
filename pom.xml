@@ -275,7 +275,7 @@
         <dependency>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>animal-sniffer-annotations</artifactId>
-            <version>1.24</version>
+            <version>1.20</version>
         </dependency>
         <dependency>
             <groupId>com.google.protobuf</groupId>
@@ -345,7 +345,7 @@
         <dependency>
             <groupId>software.amazon.glue</groupId>
             <artifactId>schema-registry-serde</artifactId>
-            <version>1.1.23</version>
+            <version>1.1.19</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.amazonaws</groupId>
@@ -386,7 +386,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
-            <version>4.5.0</version>
+            <version>4.4</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
