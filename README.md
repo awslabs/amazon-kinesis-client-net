@@ -150,6 +150,9 @@ all languages.
 
 ## Release Notes
 
+### Release (4.0.1 - May 28, 2025)
+* [#264](https://github.com/awslabs/amazon-kinesis-client-net/pull/264) Bump ch.qos.logback:logback-core from 1.3.14 to 1.3.15
+* [#263](https://github.com/awslabs/amazon-kinesis-client-net/pull/263) Bump io.netty:netty-handler from 4.1.108.Final to 4.1.118.Final
 ### Release 4.0.0 (November 6, 2024)
 * New lease assignment / load balancing algorithm
   * KCL 3.x introduces a new lease assignment and load balancing algorithm. It assigns leases among workers based on worker utilization metrics and throughput on each lease, replacing the previous lease count-based lease assignment algorithm.
