@@ -150,7 +150,12 @@ all languages.
 
 ## Release Notes
 
+### Release 4.1.1 (March 26, 2025)
+* Upgrade netty.version from 4.1.108.Final to 4.1.118.Final
+* Upgrade logback.version from 1.3.14 to 1.3.15
+
 ### Release 4.0.0 (November 6, 2024)
+#### :warning: [BREAKING CHANGES] - Release 4.0.0 contains a dependency version that is not compatible with JDK 8. Please upgrade to a later version if your KCL application requires JDK 8.
 * New lease assignment / load balancing algorithm
   * KCL 3.x introduces a new lease assignment and load balancing algorithm. It assigns leases among workers based on worker utilization metrics and throughput on each lease, replacing the previous lease count-based lease assignment algorithm.
   * When KCL detects higher variance in CPU utilization among workers, it proactively reassigns leases from over-utilized workers to under-utilized workers for even load balancing. This ensures even CPU utilization across workers and removes the need to over-provision the stream processing compute hosts.
