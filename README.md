@@ -160,6 +160,13 @@ all languages.
 
 ## Release Notes
 
+### Release 3.1.2 (October 1, 2025)
+* [#279](https://github.com/awslabs/amazon-kinesis-client-net/pull/279) Upgrade amazon-kinesis-client from 2.7.0 to 2.7.2
+* [#279](https://github.com/awslabs/amazon-kinesis-client-net/pull/279) Upgrade aws-sdk from 2.25.64 to 2.33.0
+* [#279](https://github.com/awslabs/amazon-kinesis-client-net/pull/279) Upgrade org.apache.commons:commons-lang3 from 3.14.0 to 3.18.0
+* [#279](https://github.com/awslabs/amazon-kinesis-client-net/pull/279) Upgrade netty.version from 4.1.118 to 4.2.4.Final
+* [#279](https://github.com/awslabs/amazon-kinesis-client-net/pull/279) Upgrade fasterxml-jackson from 2.13.15 to 2.15.0
+
 ### Release 3.1.1 (March 25, 2025)
 * Downgrade logback from 1.5.16 to 1.3.15 to maintain JDK 8 compatability
 
