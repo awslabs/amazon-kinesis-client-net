@@ -149,10 +149,20 @@ be language-agnostic, while providing identical features and similar parallel pr
 all languages.
 
 ## Release Notes
+### Release 4.1.0 (October 1, 2025)
+* [#276](https://github.com/awslabs/amazon-kinesis-client-net/pull/276) Add multi-lang support for leaseAssignmentIntervalMillis
+* [#281](https://github.com/awslabs/amazon-kinesis-client-net/pull/281) Upgrade amazon-kinesis-client from 3.0.0 to 3.1.3
+* [#281](https://github.com/awslabs/amazon-kinesis-client-net/pull/281) Upgrade aws-sdk from 2.25.64 to 2.33.0
+* [#281](https://github.com/awslabs/amazon-kinesis-client-net/pull/281) Upgrade netty.version from 4.1.108.Final to 4.2.4.Final
+* [#281](https://github.com/awslabs/amazon-kinesis-client-net/pull/281) Upgrade fasterxml-jackson from 2.13.5 to 2.15.0
+* [#281](https://github.com/awslabs/amazon-kinesis-client-net/pull/281) Upgrade checker-qual from 2.5.2 to 3.49.4
+* [#281](https://github.com/awslabs/amazon-kinesis-client-net/pull/281) Upgrade org.apache.commons:commons-lang3 from 3.14.0 to 3.18.0
+* [#266](https://github.com/awslabs/amazon-kinesis-client-net/pull/266) Upgrade commons-beanutils from 1.9.4 to 1.11.0
 
-### Release (4.0.1 - May 28, 2025)
+### Release (May 28, 2025)
 * [#264](https://github.com/awslabs/amazon-kinesis-client-net/pull/264) Bump ch.qos.logback:logback-core from 1.3.14 to 1.3.15
 * [#263](https://github.com/awslabs/amazon-kinesis-client-net/pull/263) Bump io.netty:netty-handler from 4.1.108.Final to 4.1.118.Final
+
 ### Release 4.0.0 (November 6, 2024)
 * New lease assignment / load balancing algorithm
   * KCL 3.x introduces a new lease assignment and load balancing algorithm. It assigns leases among workers based on worker utilization metrics and throughput on each lease, replacing the previous lease count-based lease assignment algorithm.
