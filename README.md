@@ -159,7 +159,7 @@ all languages.
 * [#281](https://github.com/awslabs/amazon-kinesis-client-net/pull/281) Upgrade org.apache.commons:commons-lang3 from 3.14.0 to 3.18.0
 * [#266](https://github.com/awslabs/amazon-kinesis-client-net/pull/266) Upgrade commons-beanutils from 1.9.4 to 1.11.0
 
-### Release (May 28, 2025)
+### Release 4.0.1 (May 28, 2025)
 * [#264](https://github.com/awslabs/amazon-kinesis-client-net/pull/264) Bump ch.qos.logback:logback-core from 1.3.14 to 1.3.15
 * [#263](https://github.com/awslabs/amazon-kinesis-client-net/pull/263) Bump io.netty:netty-handler from 4.1.108.Final to 4.1.118.Final
 
@@ -283,3 +283,4 @@ all languages.
 ## License
 
 This library is licensed under the Apache 2.0 License. 
+
