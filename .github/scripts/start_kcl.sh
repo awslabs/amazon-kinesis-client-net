@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-SAMPLE_PROPERTIES="../.github/resources/kcl.properties"
+SAMPLE_PROPERTIES="../.github/resources/github_workflow.properties"
 
 if [[ "$RUNNER_OS" == "macOS" ]]; then
   brew install coreutils
