@@ -9,6 +9,6 @@ updates:
     directory: "/"
     open-pull-requests-limit: 4
     schedule:
-      interval: "daily"
+      interval: "weekly"
     ignore:
       - dependency-name: 'awssdk.*'
